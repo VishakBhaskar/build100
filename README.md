@@ -6,5 +6,5 @@ Notes and a mindmap for the full Offer, Cold Calling and Sales course, with all 
 - **[Mindmap](index.html)**: a clickable map of the course. Each step branches into its examples and scripts.
 
 Live pages:
-- Mindmap: https://vishakbhaskar.github.io/build100/mindmap/
-- Notes: https://vishakbhaskar.github.io/build100/notes/
+- Mindmap: https://vishakbhaskar.github.io/mindmap/
+- Notes: https://vishakbhaskar.github.io/notes/
