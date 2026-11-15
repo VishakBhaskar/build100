@@ -1,0 +1,792 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Sales Playbook Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: a transit-style line per module — stops down a coloured line, branches off each stop, detail panel beside it */
+:root {
+  --bg: #EDF0F3;
+  --surface: #FFFFFF;
+  --ink: #17212C;
+  --muted: #5A6674;
+  --rule: #D2D9E1;
+  --offer: #B8770C;
+  --cold-calling: #0E8676;
+  --sales: #2E58CC;
+  --on-accent: #FFFFFF;
+  --warn-bg: #FFF5E0;
+  --warn-rule: #EBCB86;
+  --warn-ink: #6B4A00;
+  --c: var(--offer);
+  --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0F141A; --surface: #18202A; --ink: #E6EBF1; --muted: #98A4B2; --rule: #2B3644;
+    --offer: #E2A33A; --cold-calling: #33B9A6; --sales: #7395F3; --on-accent: #0D1218;
+    --warn-bg: #2B2414; --warn-rule: #5E4B22; --warn-ink: #F0D395;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0F141A; --surface: #18202A; --ink: #E6EBF1; --muted: #98A4B2; --rule: #2B3644;
+  --offer: #E2A33A; --cold-calling: #33B9A6; --sales: #7395F3; --on-accent: #0D1218;
+  --warn-bg: #2B2414; --warn-rule: #5E4B22; --warn-ink: #F0D395;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink);
+  font: 15px/1.55 var(--font-body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--c); outline-offset: 2px; }
+.wrap { max-width: 1240px; margin: 0 auto; padding-block: 28px 64px; display: grid; gap: 24px; }
+
+/* Header */
+.top { display: grid; gap: 6px; }
+.kicker { font: 600 11.5px/1 var(--font-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+h1 { font: 800 clamp(28px, 4.2vw, 42px)/1.05 var(--font-display); letter-spacing: -.01em; margin: 0; text-wrap: balance; }
+.sub { margin: 0; color: var(--muted); max-width: 62ch; }
+
+/* Toolbar */
+.toolbar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; }
+.tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+.tab {
+  --tc: var(--offer);
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 6px 14px 6px 6px; border: 1px solid var(--rule); border-radius: 999px;
+  background: var(--surface); cursor: pointer; font-weight: 600; font-size: 14px;
+}
+.tab .badge {
+  width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--tc); color: var(--on-accent); font: 700 12px/1 var(--font-mono);
+}
+.tab .count { font: 500 12px/1 var(--font-mono); color: var(--muted); }
+.tab[aria-selected="true"] { border-color: var(--tc); background: color-mix(in srgb, var(--tc) 13%, var(--surface)); }
+.tab[data-mod="cold-calling"] { --tc: var(--cold-calling); }
+.tab[data-mod="sales"] { --tc: var(--sales); }
+.tab[data-mod="playbook"] { --tc: var(--ink); }
+.tab[data-mod="playbook"] .badge { font-size: 14px; }
+
+.search { position: relative; flex: 1 1 260px; max-width: 380px; }
+.search input {
+  width: 100%; padding: 10px 14px 10px 36px; border: 1px solid var(--rule); border-radius: 10px;
+  background: var(--surface); color: var(--ink); font: inherit; font-size: 14px;
+}
+.search svg { position: absolute; left: 12px; top: 50%; translate: 0 -50%; width: 16px; height: 16px; stroke: var(--muted); fill: none; }
+.results {
+  position: absolute; z-index: 20; top: calc(100% + 6px); left: 0; right: 0;
+  background: var(--surface); border: 1px solid var(--rule); border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(10, 20, 30, .14); max-height: 380px; overflow: auto; padding: 6px;
+}
+.result { display: grid; gap: 2px; width: 100%; text-align: left; border: 0; background: none; padding: 8px 10px; border-radius: 8px; cursor: pointer; }
+.result:hover, .result:focus-visible { background: color-mix(in srgb, var(--rc, var(--c)) 11%, var(--surface)); }
+.result .r-title { font-weight: 600; font-size: 14px; }
+.result .r-meta { font: 500 11.5px/1.3 var(--font-mono); color: var(--muted); }
+.result .r-snip { font-size: 13px; color: var(--muted); }
+.no-results { padding: 12px; color: var(--muted); font-size: 14px; }
+
+/* Layout */
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 440px); gap: 32px; align-items: start; }
+.map { display: grid; gap: 20px; min-width: 0; }
+.line-head { display: grid; gap: 4px; }
+.line-head h2 { font: 800 30px/1.1 var(--font-display); margin: 0; color: var(--ink); }
+.line-head h2 .swatch { display: inline-block; width: 14px; height: 14px; border-radius: 50%; background: var(--c); margin-right: 10px; vertical-align: 3px; }
+.line-head p { margin: 0; color: var(--muted); max-width: 60ch; }
+
+/* Side groups (before / after the line) */
+.group { border: 1.5px dashed color-mix(in srgb, var(--c) 45%, var(--rule)); border-radius: 14px; padding: 14px 14px 10px; display: grid; gap: 4px; }
+.group-label { font: 600 11.5px/1 var(--font-mono); letter-spacing: .09em; text-transform: uppercase; color: var(--muted); padding: 2px 10px 6px; }
+.gnode { display: grid; gap: 2px; }
+
+/* The line */
+.stations { list-style: none; margin: 0; padding: 0; position: relative; display: grid; }
+.stations::before {
+  content: ""; position: absolute; left: 17px; top: 26px; bottom: 26px; width: 6px;
+  border-radius: 3px; background: var(--c);
+}
+.station { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 14px; padding-block: 8px; align-items: start; }
+.dot {
+  position: relative; z-index: 1; width: 40px; height: 40px; border-radius: 50%;
+  background: var(--surface); border: 5px solid var(--c);
+  display: grid; place-items: center; font: 600 13px/1 var(--font-mono); color: var(--ink);
+  margin-top: 2px; transition: background .15s, color .15s;
+}
+.station.is-active .dot { background: var(--c); color: var(--on-accent); }
+.node-btn {
+  display: grid; gap: 1px; width: 100%; text-align: left; border: 1px solid transparent;
+  background: none; padding: 7px 12px; border-radius: 10px; cursor: pointer;
+}
+.node-btn:hover { background: color-mix(in srgb, var(--c) 7%, transparent); }
+.node-btn.is-active { background: var(--surface); border-color: color-mix(in srgb, var(--c) 55%, var(--rule)); }
+.node-name { font: 700 18px/1.25 var(--font-display); }
+.node-short { font-size: 13.5px; color: var(--muted); }
+.branches {
+  display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 2px 12px; padding: 4px 0 4px 14px;
+  border-left: 2px solid color-mix(in srgb, var(--c) 40%, var(--rule));
+}
+.chip {
+  padding: 4px 12px; border: 1px solid var(--rule); border-radius: 999px; background: var(--surface);
+  font-size: 13px; font-weight: 500; cursor: pointer; line-height: 1.5;
+}
+.chip:hover { border-color: color-mix(in srgb, var(--c) 60%, var(--rule)); }
+.chip.is-active { background: var(--c); border-color: var(--c); color: var(--on-accent); }
+.chip .star-dot { color: var(--c); margin-left: 4px; }
+.chip.is-active .star-dot { color: var(--on-accent); }
+
+/* Detail panel */
+.panel {
+  position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow: auto;
+  background: var(--surface); border: 1px solid var(--rule); border-radius: 16px;
+  padding: 22px 22px 26px; display: grid; gap: 16px; min-width: 0;
+}
+.panel-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.eyebrow { display: flex; align-items: center; gap: 8px; font: 600 11.5px/1.3 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.eyebrow::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--c); flex: none; }
+.close-btn { display: none; border: 1px solid var(--rule); background: var(--bg); border-radius: 999px; padding: 4px 12px; font-size: 13px; cursor: pointer; }
+.panel h2 { font: 800 26px/1.15 var(--font-display); margin: 0; text-wrap: balance; }
+.summary { margin: 0; font-size: 15.5px; }
+.sec { display: grid; gap: 8px; }
+.sec h3 { margin: 0; font: 600 11.5px/1 var(--font-mono); letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+.sec ul, .sec ol { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.sec ol li::marker { font: 600 13px var(--font-mono); color: var(--c); }
+.sec ul li::marker { color: var(--c); }
+
+.script {
+  border: 1px solid color-mix(in srgb, var(--c) 32%, var(--rule)); border-radius: 12px;
+  background: color-mix(in srgb, var(--c) 7%, var(--surface)); padding: 12px 14px 10px; display: grid; gap: 8px;
+}
+.script q { quotes: "\201C" "\201D"; font-size: 15px; line-height: 1.5; }
+.script-actions { display: flex; gap: 6px; justify-content: flex-end; }
+.mini {
+  border: 1px solid var(--rule); background: var(--surface); border-radius: 999px;
+  padding: 3px 11px; font-size: 12.5px; font-weight: 500; cursor: pointer;
+}
+.mini[aria-pressed="true"] { background: var(--c); border-color: var(--c); color: var(--on-accent); }
+
+.table-wrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: 10px; }
+table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+th { text-align: left; font: 600 11px/1.3 var(--font-mono); letter-spacing: .07em; text-transform: uppercase; color: var(--muted); background: var(--bg); }
+th, td { padding: 8px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+tr:last-child td { border-bottom: 0; }
+td:first-child { font-weight: 600; white-space: nowrap; }
+
+.callout { border: 1px solid var(--warn-rule); background: var(--warn-bg); color: var(--warn-ink); border-radius: 12px; padding: 12px 14px; }
+.callout h3 { color: var(--warn-ink); }
+.callout ul li::marker { color: var(--warn-ink); }
+
+.branch-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.notes textarea {
+  width: 100%; min-height: 84px; resize: vertical; padding: 10px 12px; border: 1px solid var(--rule);
+  border-radius: 10px; background: var(--bg); color: var(--ink); font: inherit; font-size: 14px;
+}
+.hint { font-size: 12px; color: var(--muted); }
+.pager { display: flex; justify-content: space-between; gap: 8px; border-top: 1px solid var(--rule); padding-top: 14px; }
+.pager button { border: 1px solid var(--rule); background: var(--bg); border-radius: 10px; padding: 8px 12px; cursor: pointer; font-size: 13px; text-align: left; max-width: 48%; display: grid; gap: 1px; }
+.pager button:last-child { text-align: right; margin-left: auto; }
+.pager .p-label { font: 500 11px/1.2 var(--font-mono); color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+.pager button[disabled] { visibility: hidden; }
+
+/* Playbook view */
+.playbook { display: grid; gap: 18px; max-width: 820px; }
+.pb-head { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; justify-content: space-between; }
+.pb-head h2 { font: 800 30px/1.1 var(--font-display); margin: 0; }
+.pb-head p { margin: 4px 0 0; color: var(--muted); }
+.btn { border: 1px solid var(--ink); background: var(--ink); color: var(--bg); border-radius: 10px; padding: 9px 16px; font-weight: 600; font-size: 14px; cursor: pointer; }
+.pb-mod { --c: var(--offer); display: grid; gap: 10px; }
+.pb-mod[data-mod="cold-calling"] { --c: var(--cold-calling); }
+.pb-mod[data-mod="sales"] { --c: var(--sales); }
+.pb-mod > h3 { margin: 0; font: 700 20px/1.2 var(--font-display); display: flex; align-items: center; gap: 10px; }
+.pb-mod > h3::before { content: ""; width: 12px; height: 12px; border-radius: 50%; background: var(--c); }
+.pb-item { background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 14px 16px; display: grid; gap: 10px; }
+.pb-item-head { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.pb-item-head strong { font: 700 16px/1.3 var(--font-display); }
+.pb-note { white-space: pre-wrap; font-size: 14px; border-left: 3px solid var(--c); padding-left: 10px; }
+.empty { background: var(--surface); border: 1.5px dashed var(--rule); border-radius: 14px; padding: 24px; color: var(--muted); }
+.empty strong { color: var(--ink); }
+
+.scrim { display: none; }
+
+@media (max-width: 899px) {
+  .layout { grid-template-columns: 1fr; }
+  .panel {
+    position: fixed; z-index: 40; left: 0; right: 0; bottom: 0; top: auto;
+    max-height: 84vh; border-radius: 18px 18px 0 0; border-bottom: 0;
+    padding: 18px max(18px, env(safe-area-inset-right, 0px)) calc(24px + env(safe-area-inset-bottom, 0px)) max(18px, env(safe-area-inset-left, 0px));
+    transform: translateY(105%); transition: transform .25s ease;
+    box-shadow: 0 -16px 40px rgba(10, 20, 30, .22);
+  }
+  .panel.open { transform: none; }
+  .close-btn { display: inline-block; }
+  .scrim.open { display: block; position: fixed; inset: 0; z-index: 35; background: rgba(8, 14, 20, .38); }
+  .search { max-width: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <span class="kicker">Course notes · offer, cold calling, sales</span>
+    <h1>Sales Playbook Map</h1>
+    <p class="sub">Each module is a line of stops in call order. Tap a stop or a branch to open its rules, scripts and examples. Star the lines you'll actually use and add your own notes to build your process. Prefer reading it top to bottom? <a href="../notes/" style="color:var(--ink);font-weight:600">Read the notes</a>.</p>
+  </header>
+
+  <div class="toolbar">
+    <div class="tabs" role="tablist" aria-label="Modules" id="tabs"></div>
+    <div class="search">
+      <svg viewBox="0 0 24 24" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+      <input id="q" type="search" placeholder="Search scripts, frameworks, rules…" autocomplete="off" aria-label="Search the playbook">
+      <div class="results" id="results" hidden></div>
+    </div>
+  </div>
+
+  <main class="layout" id="mapView">
+    <div class="map" id="map"></div>
+    <aside class="panel" id="panel" aria-live="polite"></aside>
+  </main>
+
+  <section class="playbook" id="playbookView" hidden></section>
+</div>
+<div class="scrim" id="scrim"></div>
+
+<script>
+const MODULES = [
+{
+  id: "offer", name: "Offer", letter: "O",
+  flow: "Build order · 8 stops",
+  lead: "What you promise, who you promise it to, and how you keep clients once they buy.",
+  stations: [
+    { id: "o-offer", title: "Service vs offer", short: "Sell the change, not the task",
+      summary: "The service is what you do. The offer is the promise of what changes for the client.",
+      points: ["Ask: what actually changes for a company when it uses my service?", "That change is the offer."],
+      branches: [
+        { id: "o-beat", title: "Beat the market", summary: "A repeatable way to make the offer better than anyone else's.", ordered: true,
+          points: ["Write down every activity you do in the business.", "Pick one and make it better than anyone else in the market.", "Repeat."] }
+      ] },
+    { id: "o-market", title: "Market", short: "Niche down",
+      summary: "Niche down so you can personalise better. Better personalisation means fewer existing beliefs to break and get past.",
+      branches: [
+        { id: "o-aware", title: "Awareness stages", summary: "Move the prospect through three stages of awareness.", ordered: true,
+          points: ["Problem aware", "Solution aware", "Aware of your method"] }
+      ] },
+    { id: "o-msg", title: "Messaging", short: "Their words, no risk",
+      summary: "Speak to prospects directly, even when they're thousands of kilometres away.",
+      points: ["Use the ICP's language. Every industry has its own words and lingo; put them in the offer so it reads as if written for them.", "Remove the risk in the offer (see Guarantee)."] },
+    { id: "o-six", title: "Six elements", short: "Size up the problem",
+      summary: "Six elements of a problem, and of the offer that solves it.", ordered: true,
+      points: ["Size: how big is the problem?", "Duration: how long have they been in pain? Longer pain lets you charge more.", "Complexity: how hard is it to solve? Can they just Google it?", "Skill", "Certainty", "Speed"] },
+    { id: "o-guar", title: "Guarantee", short: "Remove the fear",
+      summary: "A guarantee removes the fear, not all of the risk.",
+      branches: [
+        { id: "o-parts", title: "Four parts of an offer", summary: "Every offer carries these four parts.",
+          points: ["Promise: what changes (the outcome).", "Guarantee: who carries the risk.", "CTA: what you want them to do next.", "Urgency and scarcity: why now."] },
+        { id: "o-check", title: "Before you guarantee", summary: "Run four checks before you commit to a guarantee.",
+          points: ["Control: is the outcome inside your control? If it depends on things you can't control, you'll end up breaking it.", "Track record: have you delivered enough to know your real win rate? A guarantee based on your best case is a bet.", "Cost: can you afford to pay it out in your worst realistic month?", "Stage fit: does it match the stage your business is in?"] },
+        { id: "o-types", title: "Four types", summary: "Pick the guarantee that fits the business and the buyer.",
+          table: { head: ["Type", "How it works"], rows: [
+            ["Unconditional", "Pay, try it, full refund if not happy, no questions asked. Usually for product businesses."],
+            ["Conditional", "If you do what our best clients do and don't get results, we refund or keep working for free."],
+            ["Anti-guarantee", "All sales are final. For buyers who don't need a safety net to commit."],
+            ["Performance", "We only get paid when we get the results."] ] } },
+        { id: "o-specific", title: "Be specific", summary: "State the guarantee in exact, measurable terms.",
+          scripts: ["If your cost per lead doesn't drop within 90 days, we don't invoice you for month four."] }
+      ] },
+    { id: "o-ladder", title: "Value ladder", short: "Price up, trust up",
+      summary: "Offer several services at rising price points. Every step up, including any new product, must meet three conditions.",
+      ordered: true, points: ["Trust goes up.", "Value goes up.", "Commitment goes up."],
+      branches: [
+        { id: "o-place", title: "Placing a product", summary: "Questions that decide where a product sits on the ladder.",
+          points: ["How much trust is required?", "How big a problem does it solve?", "How much commitment is required?", "How much personalisation is required?", "What is the customer's next problem after this?"] }
+      ] },
+    { id: "o-onboard", title: "Onboarding", short: "Five steps after the yes",
+      summary: "Set expectations from day one.", ordered: true,
+      points: ["Clarify the promise: the result we deliver.", "Map the customer journey: what to expect, the next steps, what happens after each stage.", "Identify the decision maker, and who else we need to keep happy.", "Sign the contract.", "Send team and FAQ docs."] },
+    { id: "o-success", title: "Client success", short: "Performance, experience, support",
+      summary: "Retention beats acquisition. Client success has three parts.",
+      points: ["Performance: help them win by delivering the result promised.", "Experience: make them happy.", "Support: make it easy to work with you. Example: send a transcript after every call."],
+      table: { head: ["", "Performance", "Experience", "Support"], rows: [
+        ["Question", "Did they get the result promised at the sale?", "How happy are they with the service and the journey?", "How easy is it for them to work with us?"],
+        ["Measure", "Result delivered", "NPS rating, 1–10", "No technical tickets: questions answered upfront"],
+        ["How", "Milestone reviews, progress reports", "30-day check-ins, pulse surveys", "Ease of access, onboarding docs, how-to guides"] ] },
+      branches: [
+        { id: "o-stats", title: "Why retention", summary: "The numbers behind client success.",
+          points: ["Acquiring a client costs 5–25× more than retaining one.", "A 5% improvement in retention yields 25–95% more profit.", "Chance of a sale: 60–70% with existing clients vs 5–20% with new prospects.", "65% of a company's revenue comes from retention.", "$75 billion is lost per year to churn and poor service.", "72% of clients switch after one bad experience.", "80% of businesses say their service is good; only 8% of their clients agree."] }
+      ] }
+  ]
+},
+{
+  id: "cold-calling", name: "Cold calling", letter: "C",
+  flow: "Call flow · 8 stages",
+  lead: "Ask questions, don't make statements: 6–8 questions to a meeting, callback, proposal or referral.",
+  before: { label: "Before you dial", nodes: [
+    { id: "c-prep", title: "Pre-call checklist", short: "Five checks before every session", ordered: true,
+      points: ["Tracking set up (software options are in the course PDF).", "Hard rule: don't over-research a prospect or get overexcited about one.", "Know what you'll say before dialing.", "Know your outcomes, in priority order.", "Breath work to calm your nerves."],
+      branches: [
+        { id: "c-outcomes", title: "Outcomes by priority", summary: "Every call ends in one of these, best first.", ordered: true,
+          points: ["Meeting booked", "Callback requested", "Referral to someone they know who needs this", "Permission to keep in touch"] }
+      ] },
+    { id: "c-practice", title: "Practice: 10 straight no's", short: "Daily reps",
+      summary: "Get 10 straight no's. Repeat it for a few days.",
+      points: ["Track everything. Go by numbers, not emotion."] },
+    { id: "c-icp", title: "ICP and SAM model", short: "Who you call",
+      summary: "Define the ICP at two levels: the company and the individual.",
+      table: { head: ["Level", "Define"], rows: [["Company", "Size, location, industry, revenue"], ["Individual", "Position or title in the company"]] },
+      warn: ["Different company sizes have different pain points, so the offer should depend on company size.", "The decision maker differs by company size and by service."],
+      branches: [
+        { id: "c-sam", title: "SAM model example", summary: "A weak example from the course: the parameters must make sense together.",
+          points: ["Age: 27–60", "Occupation: business owners and CEOs", "Income: 20–30k per month", "Education: master's", "Location: UAE", "Company revenue and size: a defined range"] }
+      ] }
+  ] },
+  stations: [
+    { id: "c-open", title: "Open", short: "How's your day going?",
+      summary: "Greet them like an old friend. The purpose is the greeting.",
+      scripts: ["John, good morning. How's your day going?"],
+      warn: ["Don't say their full name.", "Don't ask if it's them. Assume it is and start talking."] },
+    { id: "c-time", title: "Time check", short: "Is this a good time?",
+      summary: "Check the time up front, so the objection is handled early.",
+      scripts: ["This is Vishak from Revzap. Is it a good time?"],
+      points: ["“Not a good time” is an objection. Handle it with ACA."],
+      branches: [
+        { id: "c-aca", title: "ACA framework", summary: "Acknowledge, compliment, ask. Use it on “not a good time” and other early objections.",
+          table: { head: ["Step", "Example"], rows: [["Acknowledge", "Oh, it's not a good time."], ["Compliment", "You seem like a busy man."], ["Ask", "Before I hop off, can I ask you a question?"]] },
+          scripts: ["Oh, it's not a good time. You seem like a busy man. Before I hop off, can I ask you a question?"] }
+      ] },
+    { id: "c-intent", title: "Intent check", short: "Is this something you're looking for?",
+      summary: "State the outcome and process, then check intent. Both a yes and a no lead to a question.",
+      scripts: ["We're a company that specialises in [outcome] through [process]. Is this something you're looking for?"],
+      branches: [
+        { id: "c-yes", title: "If yes", summary: "Get permission to qualify.", scripts: ["Awesome. Before we proceed, is it okay if I ask a few questions to see if I can actually help you?"] },
+        { id: "c-no", title: "If no", summary: "Keep the door open with one question.", scripts: ["Great. Before I hop off, can I ask you a question?"] }
+      ] },
+    { id: "c-pitch", title: "Pitch", short: "[XYZ] through [ABC]",
+      summary: "One line: the result they want, through your process.",
+      scripts: ["That sounds like something we can do. We generally help companies get [XYZ] through [ABC].", "Hi, this is Vishak from Revzap. We help companies get [outcome] through [process]. Is this something you're looking for?"],
+      points: ["XYZ is the pain they told you on this call.", "The pitch statement gauges intent. Then book the call straight away, or ask one question to check you can help."] },
+    { id: "c-qual", title: "Qualification", short: "Find the pain",
+      summary: "Every question should get them to acknowledge a pain you solve. Before calling, ask yourself: what pain am I solving?",
+      scripts: ["Are you happy with the results from your current setup / in-house team / agency?", "Most companies don't even get to the point where they understand this is a problem. I'm glad you do."],
+      points: ["If they say they're not satisfied, there's about a 90% chance of booking the meeting.", "Ask 1–2 qualifying questions max: just enough to find the pain.", "Frame questions so the answer contains a problem you've already solved.", "Save the pain. You'll use it to sell on the sales call."],
+      branches: [
+        { id: "c-qq", title: "Qualifying questions", summary: "Pick one or two.",
+          scripts: ["What have you tried? What worked and what didn't?", "Do you have an in-house team?", "Any particular reason you're open to this conversation while already having an in-house team?"] },
+        { id: "c-bant", title: "BANT", summary: "Qualify on four things, then sort the lead.",
+          table: { head: ["Letter", "Stands for", "Meaning"], rows: [["B", "Budget", "Can they pay?"], ["A", "Authority", "Are they the decision maker?"], ["N", "Need", "What do they need?"], ["T", "Timeline", "When do they need it?"]] },
+          points: ["After qualifying, sort the lead: hot, nurture or dead."] }
+      ] },
+    { id: "c-obj", title: "Objection handling", short: "ACA, then a question",
+      summary: "An objection you overcome is close to a guaranteed meeting: about 90% of handled objections end in one. Handling objections matters more than intent.",
+      scripts: ["Are you saying this because you don't need it, or because you don't trust a random cold call?", "Are you saying this because you have the best solution, or because you don't trust a random cold call?", "Are you happy with the current performance, or are you saying no because you don't need it?"],
+      branches: [
+        { id: "c-pain", title: "They admit the pain", summary: "Normalise it, show a result, offer 15 minutes.",
+          scripts: ["I completely understand. Most companies we work with have the same issue. We help them by doing [XYZ]. We did this for [client], and this is how we solved it. Want to hop on a quick 15-minute call where I can show you how?"] },
+        { id: "c-happy", title: "They're happy", summary: "Take the risk away with one free project.",
+          scripts: ["I just wanted to know if you're completely happy with your current solution, or you don't trust a random cold call. If that's the case, I can do one free project. If you don't like it, never talk to me again.", "Best case, you get a team for life. Worst case, you keep the system we built for free and the meetings it booked. You have nothing to lose.", "The call is just so I can understand your requirements and whether we can help at all."],
+          points: ["This is where you show credibility and past projects, right on the cold call."] },
+        { id: "c-magnet", title: "Lead magnet route", summary: "Opens doors even when you have no proof yet.", ordered: true,
+          points: ["Ask whether they have the best solution or don't trust a random cold call.", "Whatever they answer, offer to do something for them.", "Give the lead magnet for free. The only condition is a call.", "Ask a few questions about their needs so you can prepare real value."],
+          scripts: ["I completely understand. I'd like to do something for you, if that's okay.", "It won't cost you anything more than a 15-minute Zoom call."] },
+        { id: "c-later", title: "Still no to a call", summary: "Leave with a next step anyway.",
+          points: ["Ask if you can call back in a couple of months.", "Or ask to send an email, so they know what this is about next time."] }
+      ] },
+    { id: "c-close", title: "Close", short: "Monday or Tuesday?",
+      summary: "Don't ask when they're free. Assume the meeting and give two options.",
+      scripts: ["Let's get on a call to discuss this further.", "Does Monday or Tuesday work better?", "I can clarify this more over a call. Let me know if Monday or Tuesday works better."],
+      points: ["Assumed close: after clearing an objection with ACA, route the answer so the call is the natural next step."] },
+    { id: "c-reconfirm", title: "Reconfirmation", short: "Lock it in",
+      summary: "Reconfirm the meeting before you hang up." }
+  ],
+  after: { label: "On every call", nodes: [
+    { id: "c-tone", title: "Tonality", short: "How you say it",
+      summary: "It's not what you say, it's how you say it.",
+      table: { head: ["Part", "What it is"], rows: [["Tone", "Conveys emotion: warmth, assertiveness, friendliness, enthusiasm. Must be authentic."], ["Pitch", "How high or low your voice is"], ["Volume", "Loudness"], ["Rhythm", "Flow"]] },
+      points: ["Rising at the end of a sentence sounds friendly and empathetic.", "Falling at the end sounds assertive and confident. Use it when stating the price.", "Widen your natural range of pitch, tone and volume gradually, so your voice flows like a dance."] },
+    { id: "c-mod", title: "Modulation", short: "Variety, pace, pauses",
+      summary: "Modulation combines vocal variety, pacing, and emphasis with pauses.",
+      points: ["Vocal variety = pitch variation + pace control + volume adjustment.", "Pacing: vary between medium and slow, and slow down to emphasise. Match the prospect's pace: meet in the middle, closer to theirs.", "Pausing: no filler words. Pause deliberately, including when you get stuck."] }
+  ] }
+},
+{
+  id: "sales", name: "Sales", letter: "S",
+  flow: "Call flow · 11 stages",
+  lead: "Clarity closes the sale. Pass the three gates, and pitch only once you understand everything end to end.",
+  before: { label: "Before the call", nodes: [
+    { id: "s-mind", title: "Mindset", short: "Clarity, not convincing",
+      summary: "A closer is in the business of clarity, not convincing. Your job is to find their beliefs and break the false ones.",
+      points: ["Every problem has more than one side. Treat it as a feature, not a bug.", "Don't get distracted. Do the basics, and never stop doing the basics.", "Clarity closes every sale: the more you give, the easier the close.", "To get answers, they have to lower their guard. That happens when you're likable, and likability comes from authenticity.", "Be aware of the emotions your reactions invoke in people."] }
+  ] },
+  stations: [
+    { id: "s-rapport", title: "Rapport", short: "Trust in 2–3 minutes",
+      summary: "Rapport is trust. It lowers their guard and makes them feel they'll be understood. Be honest, and don't sell what they don't need.",
+      ordered: true, points: ["Greet them with high energy.", "Ask a personal question with high energy. Be genuinely curious; don't fake it.", "Shift to a curious tone and ask permission to ask questions."],
+      scripts: ["What made you take the call?", "What would make the next 30 minutes worth it for you?", "Mind if I ask you a few questions first, to see if I can help you?"],
+      table: { head: ["Voice", "Setting"], rows: [["Tone", "Warm, approachable, welcoming"], ["Pitch", "Medium"], ["Volume", "Steady and warm"], ["Face", "Smile genuinely"]] },
+      warn: ["Never spend more than 2–3 minutes here.", "They must show their face. If they don't, say you can't present well without seeing them, or reschedule.", "If they ask the price first, you failed to build rapport."] },
+    { id: "s-context", title: "Context", short: "Walk me through it",
+      summary: "Context comes before the gates. They should answer without feeling interrogated; each question reveals more.",
+      scripts: ["Walk me through how you do X today.", "Who runs this, and how big is the team?", "What's working, and what isn't?", "What have you already done to fix it?", "Why didn't it work?", "How long has this been a problem?", "Why solve it now?", "What happens if nothing changes?"],
+      points: ["Team size tells you what they spend or can spend, so you can price accordingly.", "Handle any objections here with empathy."],
+      table: { head: ["Voice", "Setting"], rows: [["Tone", "Calm and reassuring (better than confident and assertive here)"], ["Pitch", "Lower than normal"], ["Volume", "Soft and gentle"], ["Pace", "Slow down slightly"], ["Face", "Relaxed, with a slight nod"]] } },
+    { id: "s-g1", title: "Gate 1: Need", short: "What exactly do they want?",
+      summary: "Make sure you and the prospect are both problem aware and on the same page. Gather the context to name the offer so it sounds tailored to them.",
+      scripts: ["How can I help? Is there something specific you're looking for?"],
+      warn: ["Gate rules: you can't force a gate open, lie to a gate, or skip a gate. Break one and it reappears after the call."],
+      branches: [
+        { id: "s-l1", title: "Level 1: Fact", summary: "Get the specifics.",
+          scripts: ["What specifically do you want?", "What does success look like to you?", "If we nail this, what would be different?", "What's the number one thing you need fixed right now?"] },
+        { id: "s-l2", title: "Level 2: Reason", summary: "Find out why it matters.",
+          scripts: ["Why is this important? Why this and not something else?", "What's causing it?", "What has stopped you from solving this?"] },
+        { id: "s-l3", title: "Level 3: Cost", summary: "Make the cost of the problem real.",
+          scripts: ["What is it costing you in money, time and people?", "How does it affect you personally?", "Who else feels this problem?", "Where does this leave you in 6–12 months if nothing changes?", "What does solving it unblock?"],
+          points: ["“Who else feels this problem?” tells you whether it's just this person or others in the company."] }
+      ] },
+    { id: "s-g2", title: "Gate 2: Timeline", short: "When, who decides, how",
+      summary: "Timeline, decision maker and decision process.",
+      scripts: ["If everything aligns, when were you looking to implement this?", "Is there a specific reason for the delay?", "What does the decision-making process look like?", "Is there anyone else to consult, or who needs to approve?", "How long does each level usually take to decide?"],
+      points: ["Ask about a delay in a curious tone. The answer tells you whether to pressure or nurture.", "Plan your follow-up around their decision process."] },
+    { id: "s-g3", title: "Gate 3: Budget", short: "Allocation or access?",
+      summary: "Align on the budget and the range.",
+      points: ["Find out whether it's an allocation problem or an access-to-capital problem.", "Don't necessarily guarantee results. Be open that it may or may not work for them, unlike agencies who promise it will.", "Frame the offer with disparity in value, clarity in outcome, and conviction in what you're selling."] },
+    { id: "s-disc", title: "Discovery", short: "Where are they now?",
+      summary: "The gates qualify; discovery explores to find the solution.",
+      points: ["Discovery must answer: where are they trying to get to, where are they now, and can we get them there?", "If their desired outcome is unrealistic, ask why they believe what they believe.", "Diagnose their problem so they trust you.", "Open-ended questions give you information. Confirm it with closed-loop questions."],
+      scripts: ["What are you hoping to achieve with this if we do a good job?", "You said [X]. Is that right?"],
+      warn: ["If you don't understand their expectations, the client churns fast.", "Hard rule: don't pitch until you have total clarity, end to end."] },
+    { id: "s-deep", title: "Deep discovery", short: "Break false beliefs",
+      summary: "Understand their current state, break false beliefs by asking questions, and clear misconceptions. Keep adding questions so they stay engaged: that's how you master the flow.",
+      pointsLabel: "The sequence", ordered: true, points: ["Break belief", "Proof", "Method", "Process", "Resource"],
+      branches: [
+        { id: "s-break", title: "Break belief", summary: "Use a question, then back it with undeniable proof.",
+          scripts: ["How long do you think something like this takes?"] },
+        { id: "s-proof", title: "Proof", summary: "Proof shows why or how it works, and breaks the belief.",
+          points: ["Client success: results you've delivered.", "The world as proof: someone has done it with a similar method, and you're replicating it."] },
+        { id: "s-pyramid", title: "Keep them talking", summary: "Tips for the whole middle of the call.",
+          points: ["Keep bringing the prospect in with questions, including belief-breaking ones.", "Dig into specific pains with specific questions.", "Task: build a question-and-answer pyramid. Plan every loop so nothing they say surprises you."] }
+      ] },
+    { id: "s-sol", title: "Solution", short: "Method and process",
+      summary: "Show how it works and what it takes, so objections are answered before they come up.",
+      branches: [
+        { id: "s-method", title: "Method", summary: "Segue in with one question, then cover all three parts.",
+          scripts: ["Can I show you our method?"],
+          table: { head: ["Part", "Answers", "Skip it and…"], rows: [["What we do", "What are we actually doing?", "They don't understand what they're buying"], ["How we do it", "The steps, the real picture", "They can't picture the work"], ["Why it works", "The logic behind the approach", "They can't justify the investment"]] } },
+        { id: "s-process", title: "Process (truth circle)", summary: "Be fully honest about what it takes from their side.",
+          table: { head: ["Part", "Covers"], rows: [["What it takes", "Resources, time and commitment from their side. Never lie here, or it bites you later."], ["Honest cost", "Everything that is required from them"]] },
+          points: ["Once you've shown everything: stop talking, pause, and let them talk."] },
+        { id: "s-resource", title: "Resource", summary: "The last step of the sequence. Your notes don't cover it yet." }
+      ] },
+    { id: "s-pitch", title: "Pitch", short: "Walk the proposal live",
+      summary: "Pitch only once you have total clarity. Don't send the proposal; walk through it on a call, line by line.",
+      pointsLabel: "Proposal walkthrough", ordered: true,
+      points: ["After every line, ask if it seems fair.", "At the end, ask for a score from 1 to 10.", "Ask “why not a 1?” They'll list everything they like.", "Ask what it would take to be a 10.", "Do what they say and collect the payment."],
+      scripts: ["Does this seem fair?", "On a scale of 1 to 10, 1 being you hate it and disagree, 10 being this is exciting and you want to pay now, where are you?", "Why not a 1?", "What do you need to hear for it to be a 10?"] },
+    { id: "s-obj", title: "Objection handling", short: "LAER · feel, felt, found",
+      summary: "An objection is the ego protecting the id.",
+      pointsLabel: "Four steps", ordered: true,
+      points: ["Agree and lower the stakes.", "Isolate and confirm.", "Reframe against their own words, collected in the gates.", "Soft yes close."],
+      scripts: ["You said money is a problem, but earlier you said there's value. Is it that you don't see enough value, or that you can't allocate or access the capital?"],
+      branches: [
+        { id: "s-laer", title: "LAER", summary: "Listen, acknowledge, explore, respond.",
+          table: { head: ["Step", "Do", "Example"], rows: [["Listen", "Let them finish. Don't interrupt. Leave a silence before you answer, even if you know what they'll say.", "—"], ["Acknowledge", "Validate the concern without agreeing or conceding", "I hear you, that's a fair thing to say."], ["Explore", "Ask an open question to find the specific concern", "When you say expensive, expensive compared to what?"], ["Respond", "Address the specific concern you uncovered, not the generic objection", "—"]] } },
+        { id: "s-fff", title: "Feel, felt, found", summary: "For fear-based objections like “What if it doesn't work? This seems risky.”",
+          table: { head: ["Step", "Do"], rows: [["Feel", "Mirror the objection"], ["Felt", "Normalise it with comparable customers"], ["Found", "The result they reached, ideally a client the prospect can check"]] },
+          scripts: ["I understand why you'd feel cautious.", "Plenty of our best customers felt exactly the same way when they started.", "What they found was [result], which is why they renewed for a third year."] },
+        { id: "s-triangle", title: "Value triangle", summary: "Good, fast, cheap. You're good and fast, which gets the outcome. A cheaper competitor is fast and cheap, without the outcome.",
+          scripts: ["I can do the exact same thing for that price, but you won't get the outcome. Then you'll come back to me and pay a premium."] }
+      ] },
+    { id: "s-close", title: "Close", short: "Hypothetical or isolation",
+      summary: "Find the gap between “perfect” and what they've got, or isolate the price.",
+      branches: [
+        { id: "s-hypo", title: "Hypothetical close", summary: "Two questions, then act on the answer.",
+          scripts: ["If this was perfect, would you do this now?", "What's the difference between perfect and what you've got?", "The reason probably isn't the product or service itself. It's something you're afraid of happening. Let's talk about that."],
+          points: ["A small detail: fix it and close.", "They can't name anything: name the fear, handle it with ACA, then close.", "A big change: re-educate, then use the isolation close."] },
+        { id: "s-iso", title: "Isolation close", summary: "For price objections: isolate price, then solve it.",
+          scripts: ["I can always make it more expensive. (laugh)", "Is price the only thing stopping you?", "If I could solve this for you, would you move forward today?"],
+          points: ["Then use the good-fast-cheap comparison, or give a conditional discount."],
+          list2: { label: "Conditions for a discount", items: ["They move forward today.", "They commit to being a best client.", "They give a referral or bring in another person.", "They pay on time."] } }
+      ] }
+  ],
+  after: { label: "After the call", nodes: [
+    { id: "s-follow", title: "Follow-up protocol", short: "Call, don't message",
+      summary: "Never get off a call without a date, time, location and reason for the next call. The reason (a decision, a delivered promise, or a review) must be clear and specific.",
+      points: ["If a prospect goes quiet after the first sales call, always call. Don't message."],
+      table: { head: ["Step", "Day", "Move"], rows: [["Direct nudge", "1–2", "Ask about the answer they promised"], ["Value add", "3–5", "Share a result from a similar business"], ["Pattern interrupt", "6–9", "Name the silence, no pressure"], ["Direct ask", "10–12", "Ask if it's still a priority"], ["Permission to close", "15+", "Close the file, leave the door open"]] },
+      scripts: ["You said your partner would have an answer. What happened?", "We got results for a similar business and it made me think of you.", "Noticed it's gone quiet. Totally fine if priorities have shifted. Just wanted to know where you're at.", "Haven't heard back in a couple of days. I'd rather know than guess. Is this still a priority, or should I close this out?", "Going to close this out from my end for now. If things change, reach out and we'll pick it up from there."],
+      warn: ["Never say “just following up”."] },
+    { id: "s-nurture", title: "Nurture protocol", short: "Proof, relevance, binary",
+      summary: "Nurture is never “just checking in”. Every touch is one of three things.",
+      points: ["Proof: evidence that removes doubt.", "Relevance: specific information tied to them or their space.", "Binary: a clear yes-or-no question that moves them to a decision."],
+      branches: [
+        { id: "s-life", title: "Three lifecycles", summary: "Match the nurture to where the lead is.",
+          table: { head: ["Lifecycle", "Who", "Goal"], rows: [["Pre-call", "Haven't booked or attended a call", "Get the call booked"], ["Long cycle", "Said “not now” with a reason and a date", "Keep the gate warm until that date"], ["Dormant", "Silent for 60+ days", "One clean re-entry"]] } },
+        { id: "s-cadence", title: "Pre-call cadence", summary: "Five touchpoints. The first builds awareness and trust.",
+          table: { head: ["Day", "Move"], rows: [["0", "Confirm + one proof + one soft ask for time"], ["2", "Switch channel; answer the obvious questions"], ["5", "Share proof, don't pitch. Re-offer your time"], ["8", "Keep it short: explore or close"], ["10", "Ask permission to close the file"]] },
+          scripts: ["I'm free Monday afternoon or Tuesday. Does either work?"] }
+      ] }
+  ] }
+}
+];
+
+/* ---------- index ---------- */
+const NODES = {}, ORDER = {};
+MODULES.forEach(m => {
+  ORDER[m.id] = [];
+  const add = (n, parent, kind, num) => {
+    NODES[n.id] = { n, m, parent, kind, num };
+    ORDER[m.id].push(n.id);
+    (n.branches || []).forEach(b => add(b, n, "branch"));
+  };
+  ((m.before && m.before.nodes) || []).forEach(n => add(n, null, "before"));
+  m.stations.forEach((n, i) => add(n, null, "station", i + 1));
+  ((m.after && m.after.nodes) || []).forEach(n => add(n, null, "after"));
+});
+const nodeText = n => [n.title, n.short, n.summary, ...(n.points || []), ...(n.scripts || []), ...(n.warn || []),
+  ...((n.list2 && n.list2.items) || []), ...((n.table && n.table.rows.flat()) || [])].filter(Boolean).join(" ");
+
+/* ---------- storage (per browser) ---------- */
+const load = (k, d) => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } };
+const save = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
+let stars = load("pbmap-stars", []);
+let notes = load("pbmap-notes", {});
+
+/* ---------- state ---------- */
+const state = { view: "offer", selected: {} };
+MODULES.forEach(m => { state.selected[m.id] = m.stations[0].id; });
+
+/* ---------- helpers ---------- */
+function h(tag, attrs, ...kids) {
+  const e = document.createElement(tag);
+  if (attrs) for (const [k, v] of Object.entries(attrs)) {
+    if (v == null || v === false) continue;
+    if (k === "class") e.className = v;
+    else if (k === "text") e.textContent = v;
+    else if (k.startsWith("on")) e.addEventListener(k.slice(2), v);
+    else e.setAttribute(k, v === true ? "" : v);
+  }
+  kids.flat().forEach(c => { if (c != null && c !== false) e.append(c.nodeType ? c : document.createTextNode(c)); });
+  return e;
+}
+const $ = id => document.getElementById(id);
+const isNarrow = () => window.matchMedia("(max-width: 899px)").matches;
+const modVar = id => `var(--${id})`;
+const hasStars = id => stars.some(s => s.startsWith(id + "#"));
+async function copyText(text, btn) {
+  const done = () => { const t = btn.textContent; btn.textContent = "Copied"; setTimeout(() => { btn.textContent = t; }, 1200); };
+  try { await navigator.clipboard.writeText(text); done(); }
+  catch (e) {
+    const ta = h("textarea", { style: "position:fixed;opacity:0;left:-9999px" }); ta.value = text; document.body.append(ta); ta.select();
+    try { document.execCommand("copy"); done(); } catch (e2) { btn.textContent = "Select and copy"; }
+    ta.remove();
+  }
+}
+
+/* ---------- tabs ---------- */
+function renderTabs() {
+  const tabs = $("tabs"); tabs.textContent = "";
+  MODULES.forEach(m => {
+    tabs.append(h("button", { class: "tab", role: "tab", "data-mod": m.id, "aria-selected": String(state.view === m.id), onclick: () => go(m.id) },
+      h("span", { class: "badge", text: m.letter }), m.name, h("span", { class: "count", text: String(m.stations.length) })));
+  });
+  tabs.append(h("button", { class: "tab", role: "tab", "data-mod": "playbook", "aria-selected": String(state.view === "playbook"), onclick: () => go("playbook") },
+    h("span", { class: "badge", text: "★" }), "My playbook", h("span", { class: "count", text: String(stars.length) })));
+}
+
+/* ---------- map ---------- */
+function chips(n) {
+  if (!n.branches || !n.branches.length) return null;
+  return h("div", { class: "branches" }, n.branches.map(b =>
+    h("button", { class: "chip", "data-id": b.id, onclick: () => select(b.id, true) }, b.title, hasStars(b.id) ? h("span", { class: "star-dot", text: "★" }) : null)));
+}
+function nodeButton(n) {
+  return h("button", { class: "node-btn", "data-id": n.id, onclick: () => select(n.id, true) },
+    h("span", { class: "node-name" }, n.title, hasStars(n.id) ? h("span", { class: "star-dot", style: "color:var(--c);margin-left:6px;font-size:14px", text: "★" }) : null),
+    n.short ? h("span", { class: "node-short", text: n.short }) : null);
+}
+function group(g) {
+  if (!g) return null;
+  return h("section", { class: "group" }, h("div", { class: "group-label", text: g.label }),
+    g.nodes.map(n => h("div", { class: "gnode" }, nodeButton(n), chips(n))));
+}
+function renderMap(m) {
+  const map = $("map"); map.textContent = "";
+  map.append(h("div", { class: "line-head" },
+    h("span", { class: "kicker", text: m.flow }),
+    h("h2", {}, h("span", { class: "swatch" }), m.name),
+    h("p", { text: m.lead })));
+  map.append(group(m.before) || "");
+  map.append(h("ol", { class: "stations" }, m.stations.map((n, i) =>
+    h("li", { class: "station", "data-station": n.id },
+      h("span", { class: "dot", "aria-hidden": "true", text: String(i + 1) }),
+      h("div", {}, nodeButton(n), chips(n))))));
+  map.append(group(m.after) || "");
+}
+function markActive() {
+  const sel = state.selected[state.view];
+  const info = NODES[sel];
+  document.querySelectorAll("#map [data-id]").forEach(e => e.classList.toggle("is-active", e.dataset.id === sel));
+  const stationId = info ? (info.parent ? info.parent.id : info.n.id) : null;
+  document.querySelectorAll("#map .station").forEach(e => e.classList.toggle("is-active", e.dataset.station === stationId));
+}
+
+/* ---------- detail ---------- */
+function list(items, ordered) { return h(ordered ? "ol" : "ul", {}, items.map(t => h("li", { text: t }))); }
+function table(t) {
+  return h("div", { class: "table-wrap" }, h("table", {},
+    h("thead", {}, h("tr", {}, t.head.map(c => h("th", { text: c })))),
+    h("tbody", {}, t.rows.map(r => h("tr", {}, r.map(c => h("td", { text: c })))))));
+}
+function scriptCard(nodeId, text, i) {
+  const key = nodeId + "#" + i;
+  const on = stars.includes(key);
+  const starBtn = h("button", { class: "mini", "aria-pressed": String(on), onclick: () => toggleStar(key, starBtn) }, on ? "★ Starred" : "☆ Star");
+  const copyBtn = h("button", { class: "mini", onclick: () => copyText(text, copyBtn) }, "Copy");
+  return h("div", { class: "script" }, h("q", { text: text }), h("div", { class: "script-actions" }, copyBtn, starBtn));
+}
+function toggleStar(key, btn) {
+  const i = stars.indexOf(key);
+  if (i >= 0) stars.splice(i, 1); else stars.push(key);
+  save("pbmap-stars", stars);
+  const on = stars.includes(key);
+  btn.setAttribute("aria-pressed", String(on)); btn.textContent = on ? "★ Starred" : "☆ Star";
+  renderTabs(); renderMap(MODULES.find(m => m.id === state.view)); markActive();
+}
+function renderDetail() {
+  const panel = $("panel"); panel.textContent = "";
+  const id = state.selected[state.view];
+  const info = NODES[id]; if (!info) return;
+  const { n, m, parent, kind, num } = info;
+  const where = kind === "station" ? `Stage ${num} of ${m.stations.length}` :
+    kind === "branch" ? `Branch of ${parent.title}` :
+    (kind === "before" ? m.before.label : m.after.label);
+  panel.append(h("div", { class: "panel-top" },
+    h("span", { class: "eyebrow", text: `${m.name} · ${where}` }),
+    h("button", { class: "close-btn", onclick: closeSheet }, "Close")));
+  panel.append(h("h2", { text: n.title }));
+  if (n.summary) panel.append(h("p", { class: "summary", text: n.summary }));
+  if (n.points) panel.append(h("div", { class: "sec" }, h("h3", { text: n.pointsLabel || "Key points" }), list(n.points, n.ordered)));
+  if (n.table) panel.append(h("div", { class: "sec" }, h("h3", { text: "At a glance" }), table(n.table)));
+  if (n.list2) panel.append(h("div", { class: "sec" }, h("h3", { text: n.list2.label }), list(n.list2.items)));
+  if (n.scripts) panel.append(h("div", { class: "sec" }, h("h3", { text: n.scripts.length > 1 ? "Say it" : "Say it" }), n.scripts.map((s, i) => scriptCard(n.id, s, i))));
+  if (n.warn) panel.append(h("div", { class: "sec callout" }, h("h3", { text: "Watch out" }), list(n.warn)));
+  if (n.branches) panel.append(h("div", { class: "sec" }, h("h3", { text: "Branches" }),
+    h("div", { class: "branch-list" }, n.branches.map(b => h("button", { class: "chip", onclick: () => select(b.id, true) }, b.title)))));
+  if (parent) panel.append(h("div", { class: "sec" }, h("h3", { text: "Back to" }),
+    h("div", { class: "branch-list" }, h("button", { class: "chip", onclick: () => select(parent.id, true) }, "↑ " + parent.title))));
+  const ta = h("textarea", { id: "note-" + n.id, placeholder: "How you'll run this step: your words, your tweaks, what worked on real calls." });
+  ta.value = notes[n.id] || "";
+  ta.addEventListener("input", () => {
+    if (ta.value.trim()) notes[n.id] = ta.value; else delete notes[n.id];
+    save("pbmap-notes", notes);
+  });
+  panel.append(h("div", { class: "sec notes" }, h("h3", { text: "My notes" }), ta, h("span", { class: "hint", text: "Saved in this browser. Starred lines and notes collect in My playbook." })));
+  const order = ORDER[m.id], idx = order.indexOf(id);
+  const prev = order[idx - 1], next = order[idx + 1];
+  const pbtn = (target, label) => h("button", { disabled: !target, onclick: () => target && select(target, true) },
+    h("span", { class: "p-label", text: label }), target ? NODES[target].n.title : "");
+  panel.append(h("div", { class: "pager" }, pbtn(prev, "← Previous"), pbtn(next, "Next →")));
+  panel.scrollTop = 0;
+}
+
+/* ---------- sheet (phones) ---------- */
+function openSheet() { if (!isNarrow()) return; $("panel").classList.add("open"); $("scrim").classList.add("open"); }
+function closeSheet() { $("panel").classList.remove("open"); $("scrim").classList.remove("open"); }
+$("scrim").addEventListener("click", closeSheet);
+document.addEventListener("keydown", e => { if (e.key === "Escape") { closeSheet(); $("results").hidden = true; } });
+
+/* ---------- playbook ---------- */
+function renderPlaybook() {
+  const v = $("playbookView"); v.textContent = "";
+  const lines = [];
+  const mods = MODULES.map(m => {
+    const items = ORDER[m.id].map(id => {
+      const { n } = NODES[id];
+      const st = (n.scripts || []).map((s, i) => ({ s, key: id + "#" + i })).filter(x => stars.includes(x.key));
+      const note = notes[id];
+      if (!st.length && !note) return null;
+      lines.push(`${m.name} · ${n.title}`);
+      st.forEach(x => lines.push(`  - ${x.s}`));
+      if (note) lines.push(`  Notes: ${note}`);
+      return h("div", { class: "pb-item" },
+        h("div", { class: "pb-item-head" }, h("strong", { text: n.title }),
+          h("button", { class: "mini", onclick: () => { go(m.id); select(id, true); } }, "Open stop")),
+        st.map(x => scriptCard(id, x.s, Number(x.key.split("#")[1]))),
+        note ? h("div", { class: "pb-note", text: note }) : null);
+    }).filter(Boolean);
+    if (!items.length) return null;
+    lines.push("");
+    return h("section", { class: "pb-mod", "data-mod": m.id }, h("h3", { text: m.name }), items);
+  }).filter(Boolean);
+  const copyAll = h("button", { class: "btn", onclick: () => copyText(lines.join("\n"), copyAll) }, "Copy all");
+  v.append(h("div", { class: "pb-head" },
+    h("div", {}, h("h2", { text: "My playbook" }), h("p", { text: "Your starred lines and notes, in call order." })),
+    mods.length ? copyAll : null));
+  if (!mods.length) {
+    v.append(h("div", { class: "empty" }, h("strong", { text: "Nothing here yet. " }),
+      "Open any stop, star the scripts you'll use and write notes on how you'll run it. They collect here in call order, ready to copy into your own process."));
+  } else v.append(...mods);
+}
+
+/* ---------- navigation ---------- */
+function render() {
+  renderTabs();
+  const pb = state.view === "playbook";
+  $("mapView").hidden = pb; $("playbookView").hidden = !pb;
+  if (pb) { document.documentElement.style.setProperty("--c", "var(--ink)"); renderPlaybook(); closeSheet(); return; }
+  const m = MODULES.find(x => x.id === state.view);
+  document.documentElement.style.setProperty("--c", modVar(m.id));
+  renderMap(m); renderDetail(); markActive();
+}
+function go(view) {
+  if (location.hash !== "#" + view) { location.hash = view; } else { state.view = view; render(); }
+}
+function select(id, open) {
+  const info = NODES[id]; if (!info) return;
+  if (state.view !== info.m.id) { state.view = info.m.id; state.selected[info.m.id] = id; if (location.hash !== "#" + info.m.id) location.hash = info.m.id; render(); }
+  else { state.selected[info.m.id] = id; renderDetail(); markActive(); }
+  if (open) openSheet();
+}
+function fromHash() {
+  const v = location.hash.slice(1);
+  const valid = v === "playbook" || MODULES.some(m => m.id === v);
+  state.view = valid ? v : "offer";
+  render();
+}
+window.addEventListener("hashchange", fromHash);
+
+/* ---------- search ---------- */
+const INDEX = Object.values(NODES).map(x => ({ id: x.n.id, text: nodeText(x.n), lower: nodeText(x.n).toLowerCase(), x }));
+$("q").addEventListener("input", e => {
+  const q = e.target.value.trim().toLowerCase();
+  const box = $("results"); box.textContent = "";
+  if (q.length < 2) { box.hidden = true; return; }
+  const hits = INDEX.filter(r => r.lower.includes(q)).slice(0, 14);
+  if (!hits.length) box.append(h("div", { class: "no-results", text: "No matches. Try a word from a script, like “budget” or “Monday”." }));
+  hits.forEach(r => {
+    const i = r.lower.indexOf(q), s = Math.max(0, i - 40);
+    const snip = (s > 0 ? "…" : "") + r.text.slice(s, i + q.length + 60) + "…";
+    const meta = r.x.m.name + (r.x.parent ? " · " + r.x.parent.title : "");
+    box.append(h("button", { class: "result", style: `--rc: ${modVar(r.x.m.id)}`, onclick: () => { box.hidden = true; e.target.value = ""; select(r.id, true); } },
+      h("span", { class: "r-title", text: r.x.n.title }), h("span", { class: "r-meta", text: meta }), h("span", { class: "r-snip", text: snip })));
+  });
+  box.hidden = false;
+});
+document.addEventListener("click", e => { if (!e.target.closest(".search")) $("results").hidden = true; });
+
+fromHash();
+</script>
+
+</body>
+</html>

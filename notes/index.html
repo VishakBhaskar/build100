@@ -1,0 +1,1035 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sales Course Notes</title>
+<meta name="description" content="Notes for the full Offer, Cold Calling and Sales course, with all the sections and examples.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+:root {
+  --bg: #EDF0F3; --surface: #FFFFFF; --ink: #17212C; --muted: #5A6674; --rule: #D2D9E1;
+  --offer: #B8770C; --cold-calling: #0E8676; --sales: #2E58CC; --on-accent: #FFFFFF;
+  --c: var(--offer);
+  --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0F141A; --surface: #18202A; --ink: #E6EBF1; --muted: #98A4B2; --rule: #2B3644;
+    --offer: #E2A33A; --cold-calling: #33B9A6; --sales: #7395F3; --on-accent: #0D1218;
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 15.5px/1.6 var(--font-body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--c); outline-offset: 2px; }
+[data-mod="cold-calling"] { --c: var(--cold-calling); }
+[data-mod="sales"] { --c: var(--sales); }
+
+.wrap { max-width: 1180px; margin: 0 auto; padding-block: 28px 80px; }
+.top { display: grid; gap: 6px; margin-bottom: 20px; }
+.kicker { font: 600 11.5px/1 var(--font-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+h1 { font: 800 clamp(28px, 4.2vw, 42px)/1.05 var(--font-display); letter-spacing: -.01em; margin: 0; }
+.sub { margin: 0; color: var(--muted); max-width: 62ch; }
+.sub a { font-weight: 600; color: var(--ink); }
+
+.bar {
+  position: sticky; top: 0; z-index: 5; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+  padding: 10px 0; background: var(--bg); border-bottom: 1px solid var(--rule);
+}
+.chip {
+  display: inline-flex; align-items: center; gap: 8px; padding: 5px 13px 5px 5px;
+  border: 1px solid var(--rule); border-radius: 999px; background: var(--surface);
+  text-decoration: none; font-weight: 600; font-size: 14px;
+}
+.badge {
+  width: 24px; height: 24px; border-radius: 50%; display: inline-grid; place-items: center; flex: none;
+  background: var(--c); color: var(--on-accent); font: 700 12px/1 var(--font-mono);
+}
+.chip.active { border-color: var(--c); background: color-mix(in srgb, var(--c) 13%, var(--surface)); }
+.search { margin-left: auto; position: relative; }
+.search input {
+  width: min(260px, 60vw); padding: 8px 12px; border-radius: 10px; border: 1px solid var(--rule);
+  background: var(--surface); color: var(--ink); font: inherit; font-size: 14px;
+}
+.hits { font: 500 12px/1 var(--font-mono); color: var(--muted); margin-left: 6px; }
+
+.layout { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 28px; align-items: start; }
+.toc { position: sticky; top: 66px; max-height: calc(100vh - 80px); overflow: auto; padding-right: 4px; font-size: 13.5px; }
+.toc-mod { margin-bottom: 16px; }
+.toc-title { display: flex; gap: 8px; align-items: center; font: 700 14px/1.2 var(--font-display); text-decoration: none; margin-bottom: 6px; }
+.toc ol { list-style: none; margin: 0; padding: 0 0 0 11px; border-left: 2px solid color-mix(in srgb, var(--c) 45%, var(--rule)); }
+.toc li a { display: block; padding: 3px 0 3px 12px; color: var(--muted); text-decoration: none; }
+.toc li a:hover, .toc li a.on { color: var(--ink); }
+.toc li a.on { font-weight: 600; box-shadow: inset 2px 0 0 var(--c); margin-left: -13px; padding-left: 25px; }
+
+.mod {
+  background: var(--surface); border: 1px solid var(--rule); border-top: 4px solid var(--c);
+  border-radius: 14px; padding: 22px clamp(16px, 3vw, 34px) 28px; margin-bottom: 24px;
+}
+.mod-head { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; }
+.mod-head .badge { width: 34px; height: 34px; font-size: 15px; }
+.mod-head h2 { margin: 0; font: 800 28px/1.1 var(--font-display); }
+.prose { max-width: 78ch; }
+.prose > p:first-child { font-size: 17px; color: var(--muted); margin-top: 6px; }
+.prose h3 {
+  font: 700 19px/1.25 var(--font-display); margin: 30px 0 8px; padding-top: 14px;
+  border-top: 1px solid var(--rule);
+}
+.prose h3::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--c); margin-right: 10px; vertical-align: 3px; }
+.prose h4 { font: 700 15.5px/1.3 var(--font-display); margin: 22px 0 6px; color: var(--c); }
+.prose ul, .prose ol { padding-left: 22px; }
+.prose li { margin: 4px 0; }
+.prose li::marker { color: var(--c); font-weight: 600; }
+.prose strong { font-weight: 600; }
+.prose blockquote {
+  margin: 14px 0; padding: 12px 16px; border-left: 3px solid var(--c); border-radius: 0 10px 10px 0;
+  background: color-mix(in srgb, var(--c) 8%, var(--surface));
+}
+.prose blockquote p { margin: 0; }
+.prose em a, .prose a { color: var(--c); font-weight: 600; }
+.tw { overflow-x: auto; margin: 14px 0; border: 1px solid var(--rule); border-radius: 10px; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { text-align: left; vertical-align: top; padding: 9px 12px; border-bottom: 1px solid var(--rule); }
+tr:last-child td { border-bottom: 0; }
+th { font: 600 12px/1.3 var(--font-mono); letter-spacing: .04em; text-transform: uppercase; color: var(--muted); background: color-mix(in srgb, var(--c) 6%, var(--surface)); }
+td:first-child { font-weight: 600; }
+mark { background: color-mix(in srgb, var(--c) 30%, transparent); color: inherit; border-radius: 3px; padding: 0 1px; }
+.foot { color: var(--muted); font-size: 13px; text-align: center; margin-top: 32px; }
+
+@media (max-width: 860px) {
+  .layout { grid-template-columns: minmax(0, 1fr); }
+  .toc { display: none; }
+  .search { margin-left: 0; width: 100%; }
+  .search input { width: 100%; }
+}
+@media print {
+  .bar, .toc { display: none; }
+  .layout { display: block; }
+  body { background: #fff; }
+  .mod { break-inside: auto; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <span class="kicker">Build100 · course notes</span>
+    <h1>Offer, Cold Calling &amp; Sales</h1>
+    <p class="sub">Notes for the full course, with all the sections and examples. Want to click through it step by step? Open the <a href="../mindmap/">mindmap</a>.</p>
+  </header>
+
+  <nav class="bar" aria-label="Sections">
+    <a class="chip" data-mod="offer" href="#offer"><span class="badge">O</span>Offer</a>
+    <a class="chip" data-mod="cold-calling" href="#cold-calling"><span class="badge">C</span>Cold Calling</a>
+    <a class="chip" data-mod="sales" href="#sales"><span class="badge">S</span>Sales</a>
+    <label class="search"><input id="q" type="search" placeholder="Search the notes…" aria-label="Search the notes"><span class="hits" id="hits"></span></label>
+  </nav>
+
+  <div class="layout">
+    <aside class="toc" aria-label="Contents"><div class="toc-mod" data-mod="offer"><a class="toc-title" href="#offer"><span class="badge">O</span>Offer</a><ol><li><a href="#offer-service-vs-offer">Service vs. offer</a></li><li><a href="#offer-messaging">Messaging</a></li><li><a href="#offer-making-the-offer-better-than-the-market">Making the offer better than the market</a></li><li><a href="#offer-market-framework">Market framework</a></li><li><a href="#offer-six-elements-of-a-problem-and-offer">Six elements of a problem (and offer)</a></li><li><a href="#offer-why-retention-matters">Why retention matters</a></li><li><a href="#offer-client-success">Client success</a></li><li><a href="#offer-onboarding-process">Onboarding process</a></li><li><a href="#offer-value-ladder">Value ladder</a></li><li><a href="#offer-guarantee">Guarantee</a></li></ol></div><div class="toc-mod" data-mod="cold-calling"><a class="toc-title" href="#cold-calling"><span class="badge">C</span>Cold Calling</a><ol><li><a href="#cold-calling-foundations">Foundations</a></li><li><a href="#cold-calling-defining-the-icp">Defining the ICP</a></li><li><a href="#cold-calling-pre-call-checklist">Pre-call checklist</a></li><li><a href="#cold-calling-call-flow">Call flow</a></li><li><a href="#cold-calling-stage-1-the-open">Stage 1: the open</a></li><li><a href="#cold-calling-stage-2-finding-the-pain-qualification">Stage 2: finding the pain (qualification)</a></li><li><a href="#cold-calling-stage-3-objection-handling">Stage 3: objection handling</a></li><li><a href="#cold-calling-stage-4-the-pitch">Stage 4: the pitch</a></li><li><a href="#cold-calling-stage-5-the-close">Stage 5: the close</a></li><li><a href="#cold-calling-bant-qualification">BANT qualification</a></li><li><a href="#cold-calling-tonality-voice-and-speech">Tonality: voice and speech</a></li><li><a href="#cold-calling-modulation-for-influence">Modulation for influence</a></li></ol></div><div class="toc-mod" data-mod="sales"><a class="toc-title" href="#sales"><span class="badge">S</span>Sales</a><ol><li><a href="#sales-sales-mindset">Sales mindset</a></li><li><a href="#sales-call-flow">Call flow</a></li><li><a href="#sales-rapport-first-2-3-minutes">Rapport (first 2–3 minutes)</a></li><li><a href="#sales-context-before-the-gates">Context (before the gates)</a></li><li><a href="#sales-the-gates">The gates</a></li><li><a href="#sales-discovery">Discovery</a></li><li><a href="#sales-after-the-gates-before-the-pitch">After the gates, before the pitch</a></li><li><a href="#sales-presenting-the-proposal">Presenting the proposal</a></li><li><a href="#sales-value-triangle">Value triangle</a></li><li><a href="#sales-closing-techniques">Closing techniques</a></li><li><a href="#sales-objection-handling">Objection handling</a></li><li><a href="#sales-follow-up-protocol">Follow-up protocol</a></li><li><a href="#sales-nurture-protocol">Nurture protocol</a></li></ol></div></aside>
+    <main><section class="mod" id="offer" data-mod="offer"><div class="mod-head"><span class="badge">O</span><h2>Offer</h2></div><div class="prose"><p>The service is what you do; the offer is the promise of what changes for the client.</p>
+<h3 id="offer-service-vs-offer">Service vs. offer</h3>
+<ul>
+<li><strong>Service</strong> = what I do.</li>
+<li><strong>Offer</strong> = the promise.</li>
+<li>To build the offer, ask: what actually changes for a company when it uses my service? That change is the offer.</li>
+</ul>
+<h3 id="offer-messaging">Messaging</h3>
+<p>Goal: speak to prospects directly, even when they are thousands of kilometres away.</p>
+<ul>
+<li><strong>Use the ICP's language.</strong> Every industry has its own words and lingo. Put them in the offer so it reads as if written for them specifically.</li>
+<li><strong>Remove the risk in the offer.</strong> See Guarantee below.</li>
+</ul>
+<h3 id="offer-making-the-offer-better-than-the-market">Making the offer better than the market</h3>
+<ol>
+<li>Write down every activity you do in the business.</li>
+<li>Pick one and make it better than anyone else in the market.</li>
+<li>Repeat.</li>
+</ol>
+<h3 id="offer-market-framework">Market framework</h3>
+<ul>
+<li>Niche down: a narrower market lets you personalise better.</li>
+<li>Better personalisation means fewer existing beliefs to break and get past.</li>
+<li>Awareness stages: problem aware → solution aware → aware of your method.</li>
+</ul>
+<h3 id="offer-six-elements-of-a-problem-and-offer">Six elements of a problem (and offer)</h3>
+<ol>
+<li><strong>Size</strong>: how big is the problem?</li>
+<li><strong>Duration</strong>: how long have they been in pain? Longer pain lets you charge more.</li>
+<li><strong>Complexity</strong>: how hard is it to solve? Can they just Google the answer?</li>
+<li><strong>Skill</strong></li>
+<li><strong>Certainty</strong></li>
+<li><strong>Speed</strong></li>
+</ol>
+<h3 id="offer-why-retention-matters">Why retention matters</h3>
+<ul>
+<li>Acquiring a client costs 5–25× more than retaining one.</li>
+<li>A 5% improvement in retention yields 25–95% more profit.</li>
+<li>Chance of a sale: 60–70% with existing clients vs 5–20% with new prospects.</li>
+<li>65% of a company's revenue comes from retention.</li>
+<li>$75 billion is lost per year to churn and poor service.</li>
+<li>72% of clients switch after one bad experience.</li>
+<li>80% of businesses say their service is good; only 8% of their clients agree.</li>
+</ul>
+<h3 id="offer-client-success">Client success</h3>
+<p>Three parts:</p>
+<ul>
+<li><strong>Performance</strong>: help them win, i.e. deliver the result promised.</li>
+<li><strong>Experience</strong>: make them happy.</li>
+<li><strong>Support</strong>: make it easy to work with you (easy to use, responsive). Example: send a transcript after every call.</li>
+</ul>
+<div class="tw"><table>
+<thead>
+<tr>
+<th></th>
+<th>Performance</th>
+<th>Experience</th>
+<th>Support</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Key question</td>
+<td>Did they get the result promised at the sale?</td>
+<td>How happy are they with the service and the journey?</td>
+<td>How easy is it for them to work with us?</td>
+</tr>
+<tr>
+<td>Measure</td>
+<td>Result delivered</td>
+<td>NPS rating (1–10)</td>
+<td>No technical tickets: questions answered upfront</td>
+</tr>
+<tr>
+<td>How to do it</td>
+<td>Milestone reviews, progress reports</td>
+<td>30-day check-ins, pulse surveys</td>
+<td>Ease of access, onboarding docs, how-to guides and resources</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="offer-onboarding-process">Onboarding process</h3>
+<ol>
+<li><strong>Clarify the promise</strong>: the result we deliver.</li>
+<li><strong>Map the customer journey and set expectations</strong>: what to expect, the next steps, what happens after each stage.</li>
+<li><strong>Identify the decision maker</strong>: and who else we need to keep happy.</li>
+<li><strong>Sign the contract.</strong></li>
+<li><strong>Send team and FAQ docs.</strong></li>
+</ol>
+<h3 id="offer-value-ladder">Value ladder</h3>
+<p>Offer several services at increasing price points. Each step up the ladder (and each new product or service) must meet three conditions:</p>
+<ol>
+<li>Trust goes up.</li>
+<li>Value goes up.</li>
+<li>Commitment goes up.</li>
+</ol>
+<p>Questions that decide where a product sits on the ladder:</p>
+<ul>
+<li>How much trust is required?</li>
+<li>How big a problem does it solve?</li>
+<li>How much commitment is required?</li>
+<li>How much personalisation is required?</li>
+<li>What is the customer's next problem after this?</li>
+</ul>
+<h3 id="offer-guarantee">Guarantee</h3>
+<p>An offer has four parts:</p>
+<ul>
+<li><strong>Promise</strong>: what changes (the outcome).</li>
+<li><strong>Guarantee</strong>: who carries the risk.</li>
+<li><strong>CTA</strong>: what you want them to do next.</li>
+<li><strong>Urgency and scarcity</strong>: why now.</li>
+</ul>
+<p>The purpose of a guarantee is to remove the fear, not to remove all the risk.</p>
+<p><strong>Before choosing a guarantee, check:</strong></p>
+<ol>
+<li><strong>Control</strong>: is the outcome inside your control? If it depends on things you can't control, you will end up breaking it.</li>
+<li><strong>Track record</strong>: have you delivered enough to know your real win rate? A guarantee based on your best case is a bet.</li>
+<li><strong>Cost</strong>: can you afford to pay it out in your worst realistic month?</li>
+<li><strong>Stage fit</strong>: does it match the stage your business is in?</li>
+</ol>
+<p><strong>Four types of guarantee:</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>How it works</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Unconditional</td>
+<td>Pay, try it, full refund if not happy, no questions asked. Usually works for product businesses.</td>
+</tr>
+<tr>
+<td>Conditional</td>
+<td>If you do what our best clients do and don't get results, we refund or keep working for free.</td>
+</tr>
+<tr>
+<td>Anti-guarantee</td>
+<td>All sales are final. For buyers who don't need a safety net to commit.</td>
+</tr>
+<tr>
+<td>Performance</td>
+<td>We only get paid when we get the results.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Be specific when you state it. Example: "If your cost per lead doesn't drop within 90 days, we don't invoice you for month four."</p></div></section><section class="mod" id="cold-calling" data-mod="cold-calling"><div class="mod-head"><span class="badge">C</span><h2>Cold Calling</h2></div><div class="prose"><p>A cold call is a series of questions, not statements: aim for 6–8 questions that lead to one outcome (meeting, callback, proposal or referral).</p>
+<h3 id="cold-calling-foundations">Foundations</h3>
+<ul>
+<li><strong>Practice exercise:</strong> get 10 straight "no"s. Repeat it for a few days.</li>
+<li><strong>Setup has three parts:</strong> a tracking sheet, a defined ICP (SAM model and targeting), and calling software.</li>
+<li><strong>Track everything.</strong> Go by numbers, not emotion.</li>
+</ul>
+<h3 id="cold-calling-defining-the-icp">Defining the ICP</h3>
+<p>Define the ICP at two levels:</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Level</th>
+<th>What to define</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Company</td>
+<td>Size, location, industry, revenue, etc.</td>
+</tr>
+<tr>
+<td>Individual</td>
+<td>Position or title in the company</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>SAM model example</strong> (the course flagged this as a weak example; the parameters must make sense together):</p>
+<ul>
+<li>Age: 27–60</li>
+<li>Occupation: business owners and CEOs</li>
+<li>Income: 20–30k per month</li>
+<li>Education: master's</li>
+<li>Location: UAE</li>
+<li>Company revenue and size: a defined range</li>
+</ul>
+<p><strong>Important:</strong> different company sizes have different pain points, so the offer should depend on company size. The decision maker also differs by company size and by service.</p>
+<h3 id="cold-calling-pre-call-checklist">Pre-call checklist</h3>
+<ol>
+<li><strong>Tracking set up.</strong> Several software options work; see the course PDF.</li>
+<li><strong>Hard rule:</strong> don't over-research any prospect or get overexcited about one.</li>
+<li><strong>Know what you'll say before dialing.</strong></li>
+<li><strong>Know your outcomes</strong>, in priority order:<ol>
+<li>Meeting booked</li>
+<li>Callback requested</li>
+<li>Referral to someone they know who needs this</li>
+<li>Permission to keep in touch</li>
+</ol>
+</li>
+<li><strong>Breath work</strong> to calm your nerves.</li>
+</ol>
+<h3 id="cold-calling-call-flow">Call flow</h3>
+<p><em>Cold call flow (8 stages): see the Cold Calling line in the <a href="../mindmap/">mindmap</a>.</em></p>
+<p>Every stage is a question, not a statement. Whether the intent check gets a yes or a no, the next step is a qualifying question, so both paths lead to the pain and the close.</p>
+<h3 id="cold-calling-stage-1-the-open">Stage 1: the open</h3>
+<p>The open is three questions.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Purpose</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>How's your day going?</td>
+<td>Greeting</td>
+<td>"John, good morning. How's your day going?" (the "old friend" open)</td>
+</tr>
+<tr>
+<td>Is this a good time?</td>
+<td>Time check</td>
+<td>"This is Vishak from Revzap. Is it a good time?"</td>
+</tr>
+<tr>
+<td>Is this something you're looking for?</td>
+<td>Intent check</td>
+<td>"We're a company that specialises in [outcome] through [process]. Is this something you're looking for?"</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>Don't say their full name.</li>
+<li>Don't ask if it's them. Assume it is and start talking.</li>
+<li>"Not a good time" is an objection: handle it with ACA (below).</li>
+</ul>
+<h3 id="cold-calling-stage-2-finding-the-pain-qualification">Stage 2: finding the pain (qualification)</h3>
+<p>Whether the intent check gets a yes or a no, the next step is a question:</p>
+<ul>
+<li><strong>Yes:</strong> "Awesome. Before we proceed, is it okay if I ask a few questions to see if I can actually help you?"</li>
+<li><strong>No:</strong> "Great. Before I hop off, can I ask you a question?"</li>
+</ul>
+<p>The goal of every question is for them to acknowledge a pain point you solve. Before calling, ask yourself: what pain am I solving?</p>
+<ul>
+<li><strong>Key question:</strong> "Are you happy with the results from your current setup / in-house team / agency?" If they say they're not satisfied, there's about a 90% chance of booking the meeting.</li>
+<li><strong>Qualification questions</strong> (1–2 max, just enough to find the pain):<ul>
+<li>What have you tried? What worked and what didn't?</li>
+<li>Do you have an in-house team?</li>
+<li>Any particular reason you're open to this conversation while already having an in-house team?</li>
+</ul>
+</li>
+<li>Frame questions so the answer contains a problem you've already solved.</li>
+<li>Save the pain: you'll use it to sell on the sales call.</li>
+<li><strong>Compliment when they see the problem:</strong> "Most companies don't even get to the point where they understand this is a problem. I'm glad you do."</li>
+</ul>
+<h3 id="cold-calling-stage-3-objection-handling">Stage 3: objection handling</h3>
+<p>An objection you overcome is close to a guaranteed meeting: about 90% of calls where the objection is handled end in one. Handling objections contributes more to success than intent.</p>
+<p><strong>ACA framework: Acknowledge, Compliment, Ask</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Example ("It's not a good time")</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Acknowledge</td>
+<td>"Oh, it's not a good time."</td>
+</tr>
+<tr>
+<td>Compliment</td>
+<td>"You seem like a busy man."</td>
+</tr>
+<tr>
+<td>Ask</td>
+<td>"Before I hop off, can I ask you a question?"</td>
+</tr>
+</tbody>
+</table></div>
+<p>Follow-up questions after a "no":</p>
+<ul>
+<li>"Are you saying this because you don't need it, or because you don't trust a random cold call?"</li>
+<li>"Are you saying this because you have the best solution, or because you don't trust a random cold call?"</li>
+<li>"Are you happy with the current performance, or are you saying no because you don't need it?"</li>
+</ul>
+<p><strong>If they admit the pain (not happy):</strong></p>
+<blockquote>
+<p>"I completely understand. Most companies we work with have the same issue. We help them by doing [XYZ]. We did this for [client], and this is how we solved it. Want to hop on a quick 15-minute call where I can show you how?"</p>
+</blockquote>
+<p><strong>If they're happy and not interested:</strong></p>
+<blockquote>
+<p>"I just wanted to know if you're completely happy with your current solution, or you don't trust a random cold call. If that's the case, I can do one free project. If you don't like it, never talk to me again. Best case, you get a team for life. Worst case, you keep the system we built for free and the meetings it booked. You have nothing to lose. The call is just so I can understand your requirements and whether we can help at all."</p>
+</blockquote>
+<p>This is where you show credibility and past projects, right on the cold call.</p>
+<p><strong>Lead magnet route</strong> (works even when you have no proof yet):</p>
+<ol>
+<li>Ask: "Are you saying this because you have the best solution, or because you don't trust a random cold call?"</li>
+<li>Whatever they answer: "I completely understand. I'd like to do something for you, if that's okay."</li>
+<li>Offer the lead magnet for free. The only condition is a call: "It won't cost you anything more than a 15-minute Zoom call."</li>
+<li>Ask a few questions about their needs so you can prepare real value.</li>
+</ol>
+<p><strong>If they still say no to a call:</strong> ask if you can call back in a couple of months, or send an email so they know what this is about next time.</p>
+<h3 id="cold-calling-stage-4-the-pitch">Stage 4: the pitch</h3>
+<ul>
+<li><strong>Formula:</strong> "That sounds like something we can do. We generally help companies get [XYZ] through [ABC]." XYZ is the pain they told you on this call.</li>
+<li><strong>Pitch statement (for the intent check):</strong> "Hi, this is Vishak from Revzap. We help companies get [outcome] through [process]. Is this something you're looking for?" This gauges intent. Then either book the call straight away or ask one question to check you can help.</li>
+<li><strong>Discovery call framework:</strong> in the course material. Use it to establish yourself as the expert.</li>
+</ul>
+<h3 id="cold-calling-stage-5-the-close">Stage 5: the close</h3>
+<ul>
+<li><strong>Quick close:</strong> "Let's get on a call to discuss this further."</li>
+<li><strong>Don't ask when they're free.</strong> Assume the meeting and offer two options: "Does Monday or Tuesday work better?"</li>
+<li><strong>Assumed close:</strong> after clearing an objection with ACA, route the answer so the call is the natural next step: "I can clarify this more over a call. Let me know if Monday or Tuesday works better."</li>
+<li><strong>Reconfirm</strong> the meeting before hanging up.</li>
+</ul>
+<h3 id="cold-calling-bant-qualification">BANT qualification</h3>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Letter</th>
+<th>Stands for</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>B</td>
+<td>Budget</td>
+<td>Can they pay?</td>
+</tr>
+<tr>
+<td>A</td>
+<td>Authority</td>
+<td>Are they the decision maker?</td>
+</tr>
+<tr>
+<td>N</td>
+<td>Need</td>
+<td>What do they need?</td>
+</tr>
+<tr>
+<td>T</td>
+<td>Timeline</td>
+<td>When do they need it?</td>
+</tr>
+</tbody>
+</table></div>
+<p>After qualifying, sort the lead: <strong>hot</strong>, <strong>nurture</strong>, or <strong>dead</strong>.</p>
+<h3 id="cold-calling-tonality-voice-and-speech">Tonality: voice and speech</h3>
+<p>It's not what you say, it's how you say it. Speech has four parts:</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Part</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tone</td>
+<td>Conveys emotion: warmth, assertiveness, friendliness, enthusiasm. Must be authentic.</td>
+</tr>
+<tr>
+<td>Pitch</td>
+<td>How high or low your voice is</td>
+</tr>
+<tr>
+<td>Volume</td>
+<td>Loudness</td>
+</tr>
+<tr>
+<td>Rhythm</td>
+<td>Flow</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>Rising at the end</strong> of a sentence = friendly, empathetic.</li>
+<li><strong>Falling at the end</strong> = assertive, confident. Use it when stating the price.</li>
+<li><strong>Expand your natural range.</strong> Everyone has a natural range of pitch, tone and volume. Widen it gradually so your voice flows like a dance. (Practice exercise in the course material.)</li>
+</ul>
+<h3 id="cold-calling-modulation-for-influence">Modulation for influence</h3>
+<p>Modulation combines three things:</p>
+<ol>
+<li><strong>Vocal variety</strong> = pitch variation + pace control + volume adjustment.</li>
+<li><strong>Pacing:</strong> vary between medium and slow, and slow down to emphasise a point. Match the prospect's pace: meet in the middle, closer to theirs.</li>
+<li><strong>Emphasis and pausing:</strong> no filler words. Pause deliberately, including when you get stuck. It sounds natural and is extremely effective.</li>
+</ol></div></section><section class="mod" id="sales" data-mod="sales"><div class="mod-head"><span class="badge">S</span><h2>Sales</h2></div><div class="prose"><p>What closes a sale is clarity, not convincing: the call moves through fixed stages, and you don't pitch until you understand everything end to end.</p>
+<h3 id="sales-sales-mindset">Sales mindset</h3>
+<ul>
+<li>Every problem has more than one side. Treat it as a feature, not a bug.</li>
+<li>Don't get distracted. Do the basics, and never stop doing the basics.</li>
+<li><strong>Clarity closes every sale.</strong> The more clarity you give them, the easier the close.</li>
+<li>To get answers, they have to lower their guard. That happens when you're likable, and likability comes from authenticity.</li>
+<li>Be aware of the emotions your reactions invoke in people.</li>
+<li><strong>A closer is in the business of clarity, not convincing.</strong> Your job is to find their beliefs and break the false ones.</li>
+</ul>
+<h3 id="sales-call-flow">Call flow</h3>
+<p><em>Sales call flow (11 stages): see the Sales line in the <a href="../mindmap/">mindmap</a>.</em></p>
+<p>Rapport and context come first, then the three gates. Discovery and the solution follow, and you pitch only once you have total clarity.</p>
+<h3 id="sales-rapport-first-2-3-minutes">Rapport (first 2–3 minutes)</h3>
+<p>Rapport is trust: it lowers their guard and makes them feel they'll be understood. Be honest and don't sell them what they don't need. Never spend more than 2–3 minutes here.</p>
+<ol>
+<li><strong>Greet them</strong> with high energy ("Good morning…").</li>
+<li><strong>Ask a personal question</strong> with high energy. Be genuinely curious; don't fake the interest.</li>
+<li><strong>Shift to a curious tone</strong> and ask permission to ask a few questions.</li>
+</ol>
+<p>Example questions:</p>
+<ul>
+<li>"What made you take the call?"</li>
+<li>"What would make the next 30 minutes worth it for you?"</li>
+<li>"Mind if I ask you a few questions first, to see if I can help you?"</li>
+</ul>
+<p><strong>Rapport tonality:</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Setting</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tone</td>
+<td>Warm, approachable, friendly, welcoming; encourages open communication</td>
+</tr>
+<tr>
+<td>Pitch</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Volume</td>
+<td>Steady and warm</td>
+</tr>
+<tr>
+<td>Face</td>
+<td>Smile genuinely</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>They must show their face.</strong> If they don't, tell them you won't be able to present well without seeing them, or reschedule.</li>
+<li><strong>Warning sign:</strong> if the prospect asks the price first, you failed to build rapport.</li>
+</ul>
+<h3 id="sales-context-before-the-gates">Context (before the gates)</h3>
+<p>The goal is for them to answer without feeling interrogated. Each question reveals more of what you need:</p>
+<ol>
+<li>"Walk me through how you do X today."</li>
+<li>"Who runs this, and how big is the team?" This tells you what they spend or can spend, so you can price accordingly.</li>
+<li>"What's working, and what isn't?"</li>
+<li>"What have you already done to fix it?"</li>
+<li>"Why didn't it work?"</li>
+<li>"How long has this been a problem?"</li>
+<li>"Why solve it now?"</li>
+<li>"What happens if nothing changes?"</li>
+</ol>
+<p><strong>Context tonality:</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Setting</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tone</td>
+<td>Calm and reassuring (confident and assertive also works, but calm is better)</td>
+</tr>
+<tr>
+<td>Pitch</td>
+<td>Lower than normal</td>
+</tr>
+<tr>
+<td>Volume</td>
+<td>Soft and gentle</td>
+</tr>
+<tr>
+<td>Pace</td>
+<td>Slow down slightly</td>
+</tr>
+<tr>
+<td>Face</td>
+<td>Relaxed, with a slight nod</td>
+</tr>
+</tbody>
+</table></div>
+<p>Handle any objections here with empathy.</p>
+<h3 id="sales-the-gates">The gates</h3>
+<p>Three rules: you can't force a gate open, you can't lie to a gate, and you can't skip a gate. Break any of them and the gate reappears after the call.</p>
+<h4 id="sales-gate-1-need">Gate 1: Need</h4>
+<p>Purpose: make sure you and the prospect are both problem aware and on the same page, and gather the context to name the offer so it sounds tailored to them.</p>
+<p>Open with: "How can I help? Is there something specific you're looking for?" (what, why, how, where, when).</p>
+<p>Gate 1 has three levels of questions:</p>
+<p><strong>Level 1: Fact</strong></p>
+<ul>
+<li>What specifically do you want?</li>
+<li>What does success look like to you?</li>
+<li>If we nail this, what would be different?</li>
+<li>What's the number one thing you need fixed right now?</li>
+</ul>
+<p><strong>Level 2: Reason</strong></p>
+<ul>
+<li>Why is this important? Why this and not something else?</li>
+<li>What's causing it?</li>
+<li>What has stopped you from solving this?</li>
+</ul>
+<p><strong>Level 3: Cost and impact</strong></p>
+<ul>
+<li>What is it costing you in money, time and people?</li>
+<li>How does it affect you personally?</li>
+<li>Who else feels this problem? (Tells you if it's just this person or others in the company.)</li>
+<li>Where does this leave you in 6–12 months if nothing changes?</li>
+<li>What does solving it unblock?</li>
+</ul>
+<h4 id="sales-gate-2-timeline-decision-maker-decision-process">Gate 2: Timeline, decision maker, decision process</h4>
+<ul>
+<li><strong>Timeline:</strong> "If everything aligns, when were you looking to implement this?" Get clarity on when (now, later, etc.).</li>
+<li><strong>Delay:</strong> if they're delaying, ask in a curious tone: "Is there a specific reason for the delay?" This tells you whether to pressure or nurture.</li>
+<li><strong>Decision process:</strong> "What does the decision-making process look like? Is there anyone else to consult or who needs to approve? How long does each level usually take?" Plan your follow-up around the answer.</li>
+</ul>
+<h4 id="sales-gate-3-budget">Gate 3: Budget</h4>
+<ul>
+<li>Align on the budget and range.</li>
+<li>Find out whether it's an <strong>allocation</strong> problem or an <strong>access-to-capital</strong> problem.</li>
+<li>Don't necessarily guarantee results. Be open that it may or may not work for them, unlike other agencies who promise it will.</li>
+<li>Frame and present the offer with disparity in value, clarity in outcome, and conviction in what you're selling.</li>
+</ul>
+<h3 id="sales-discovery">Discovery</h3>
+<p>The gates qualify; discovery explores to find the solution. Discovery must answer three questions:</p>
+<ol>
+<li>Where are they trying to get to?</li>
+<li>Where are they now?</li>
+<li>Can we get them there?</li>
+</ol>
+<ul>
+<li><strong>Set expectations:</strong> "What are you hoping to achieve with this if we do a good job?" If you don't understand their expectations, the client will churn fast.</li>
+<li><strong>Unrealistic outcome?</strong> Ask questions to understand why they believe what they believe.</li>
+<li><strong>Diagnose their problem</strong> so the prospect trusts you.</li>
+<li><strong>Open, then closed:</strong> open-ended questions give you information; confirm it with closed-loop questions ("You said X. Is that right?").</li>
+<li><strong>Hard rule:</strong> don't pitch until you have total clarity on everything, end to end. You can gather much of it in the gates.</li>
+</ul>
+<h3 id="sales-after-the-gates-before-the-pitch">After the gates, before the pitch</h3>
+<p>Understand their current state, break false beliefs by asking questions, educate them and clear misconceptions.</p>
+<blockquote>
+<p><strong>Master the flow:</strong> don't just keep talking. Keep adding questions so they answer and stay engaged in the conversation.</p>
+</blockquote>
+<p>The sequence:</p>
+<ol>
+<li>Break belief</li>
+<li>Proof</li>
+<li>Method</li>
+<li>Process</li>
+<li>Resource</li>
+</ol>
+<h4 id="sales-1-break-belief">1. Break belief</h4>
+<ul>
+<li>Use questions. Example: "How long do you think something like this takes?"</li>
+<li>When you break a belief, back it with undeniable proof.</li>
+</ul>
+<h4 id="sales-2-proof">2. Proof</h4>
+<ul>
+<li><strong>Client success:</strong> results you've delivered.</li>
+<li><strong>The world as proof:</strong> someone has done it with a similar method, and you're replicating it.</li>
+<li>Proof shows the prospect why or how it works, and breaks the belief.</li>
+</ul>
+<h4 id="sales-3-method">3. Method</h4>
+<p>Segue: "Can I show you our method?" The method answers objections before they come up.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Part</th>
+<th>What it answers</th>
+<th>If you skip it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>What we do</td>
+<td>What are we actually doing?</td>
+<td>They don't understand what they're buying</td>
+</tr>
+<tr>
+<td>How we do it</td>
+<td>The actual approach: the steps, the real picture</td>
+<td>They can't picture the work</td>
+</tr>
+<tr>
+<td>Why it works</td>
+<td>The logic, and why we do it this way</td>
+<td>They can't justify the investment</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="sales-4-process-the-truth-circle">4. Process (the "truth circle")</h4>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Part</th>
+<th>What it covers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>What it takes</td>
+<td>The resources, time and commitment needed from their side. Never lie here, or it bites you later.</td>
+</tr>
+<tr>
+<td>Honest cost</td>
+<td>Everything that is required from them</td>
+</tr>
+</tbody>
+</table></div>
+<p>They need clarity on all of this before you do anything. Once you've shown everything: stop talking, pause, and let them talk.</p>
+<h4 id="sales-5-resource">5. Resource</h4>
+<p>Open question: the notes don't cover this step yet.</p>
+<h4 id="sales-tips">Tips</h4>
+<ul>
+<li>Keep bringing the prospect into the conversation with questions, including belief-breaking ones.</li>
+<li>Dig into specific pains with specific questions.</li>
+<li><strong>Task:</strong> build a question-and-answer pyramid. Plan every question-and-answer loop so nothing they say surprises you.</li>
+</ul>
+<h3 id="sales-presenting-the-proposal">Presenting the proposal</h3>
+<p>Don't send the proposal after the call. Walk through it on a call, line by line.</p>
+<ol>
+<li>After every line, ask: "Does this seem fair?"</li>
+<li>At the end: "On a scale of 1 to 10, 1 being you hate it and disagree, 10 being this is exciting and you want to pay now, where are you?"</li>
+<li>"Why not a 1?" They'll tell you everything they like.</li>
+<li>"What do you need to hear for it to be a 10?"</li>
+<li>Do what they say and collect the payment.</li>
+</ol>
+<h3 id="sales-value-triangle">Value triangle</h3>
+<p>Good, fast, cheap: you can only pick two. When a prospect compares your price with a competitor's:</p>
+<blockquote>
+<p>"I can do the exact same thing for that price, but you won't get the outcome. Then you'll come back to me and pay a premium."</p>
+</blockquote>
+<p>You are <strong>good and fast</strong>, which gets the outcome. The competitor is <strong>fast and cheap</strong>, without the outcome.</p>
+<h3 id="sales-closing-techniques">Closing techniques</h3>
+<h4 id="sales-hypothetical-close">Hypothetical close</h4>
+<ol>
+<li>Ask: "If this was perfect, would you do this now?"</li>
+<li>Whatever they answer, ask: "What's the difference between perfect and what you've got?"</li>
+</ol>
+<ul>
+<li><strong>A small detail:</strong> fix it and close.</li>
+<li><strong>They can't name anything:</strong> "The reason probably isn't related to the product or service itself. It's something you're afraid of happening. Let's talk about that." Handle the fear with ACA, then close.</li>
+<li><strong>A big change:</strong> re-educate, then use the isolation close.</li>
+</ul>
+<h4 id="sales-isolation-close-price-objections">Isolation close (price objections)</h4>
+<ol>
+<li><strong>Lighten it:</strong> "I can always make it more expensive." (laugh)</li>
+<li><strong>Isolate:</strong> "Is price the only thing stopping you? If I could solve this for you, would you move forward today?"</li>
+<li><strong>Then either</strong> use the good-fast-cheap comparison, <strong>or</strong> give a conditional discount.</li>
+</ol>
+<p>Conditions for dropping the price (use one or more):</p>
+<ul>
+<li>They move forward today.</li>
+<li>They commit to being a best client.</li>
+<li>They give a referral or bring in another person.</li>
+<li>They pay on time.</li>
+</ul>
+<h3 id="sales-objection-handling">Objection handling</h3>
+<p>An objection is the ego protecting the id.</p>
+<h4 id="sales-four-steps">Four steps</h4>
+<ol>
+<li><strong>Agree and lower the stakes.</strong></li>
+<li><strong>Isolate and confirm.</strong></li>
+<li><strong>Reframe against their own words.</strong> Collect their words as you go through the gates. Example: "You said money is a problem, but earlier you said there's value. Is it that you don't see enough value, or that you can't allocate or access the capital?" If it's value, talk about value, handle the objection and close.</li>
+<li><strong>Soft yes close.</strong></li>
+</ol>
+<h4 id="sales-laer-framework">LAER framework</h4>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Step</th>
+<th>How to execute</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Listen</td>
+<td>Let them finish completely. Don't interrupt. Leave a silence before you answer, even if you know what they'll say. This is a must.</td>
+<td></td>
+</tr>
+<tr>
+<td>Acknowledge</td>
+<td>Validate the concern without agreeing or conceding</td>
+<td>"I hear you, that's a fair thing to say."</td>
+</tr>
+<tr>
+<td>Explore</td>
+<td>Ask an open question to find the specific underlying concern</td>
+<td>"When you say expensive, expensive compared to what?"</td>
+</tr>
+<tr>
+<td>Respond</td>
+<td>Address the specific concern you uncovered, not the generic objection</td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="sales-feel-felt-found-fear-based-objections">Feel, felt, found (fear-based objections)</h4>
+<p>For objections like "What if it doesn't work? This seems risky." Works at the level of empathy.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Step</th>
+<th>What you do</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Feel</td>
+<td>Mirror the objection</td>
+<td>"I understand why you'd feel cautious."</td>
+</tr>
+<tr>
+<td>Felt</td>
+<td>Normalise it with comparable customers</td>
+<td>"Plenty of our best customers felt exactly the same way when they started."</td>
+</tr>
+<tr>
+<td>Found</td>
+<td>The resolution they reached, ideally with a specific client the prospect can check</td>
+<td>"What they found was [result], which is why they renewed for a third year."</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="sales-follow-up-protocol">Follow-up protocol</h3>
+<p><strong>The law:</strong> never get off a call without a date, time, location and reason for the next call. The reason (decision, delivery of a promise, or review) must be extremely clear and specific.</p>
+<p><strong>When a prospect ghosts after the first sales call:</strong> always call, don't message.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Days after they go quiet</th>
+<th>What to say</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Direct nudge</td>
+<td>1–2</td>
+<td>Never "just following up". Instead: "You said your partner would have an answer. What happened?"</td>
+</tr>
+<tr>
+<td>2. Value add</td>
+<td>3–5</td>
+<td>"We got results for a similar business and it made me think of you."</td>
+</tr>
+<tr>
+<td>3. Pattern interrupt</td>
+<td>6–9</td>
+<td>"Noticed it's gone quiet. Totally fine if priorities have shifted. Just wanted to know where you're at."</td>
+</tr>
+<tr>
+<td>4. Direct ask</td>
+<td>10–12</td>
+<td>"Haven't heard back in a couple of days. I'd rather know than guess. Is this still a priority, or should I close this out?"</td>
+</tr>
+<tr>
+<td>5. Permission to close (wake-up text)</td>
+<td>15+</td>
+<td>"Going to close this out from my end for now. If things change, reach out and we'll pick it up from there."</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="sales-nurture-protocol">Nurture protocol</h3>
+<p>Nurture is never "just checking in". Every touch is one of three things:</p>
+<ul>
+<li><strong>Proof:</strong> evidence that removes doubt.</li>
+<li><strong>Relevance:</strong> specific information tied to them or their space.</li>
+<li><strong>Binary:</strong> a clear yes-or-no question that moves them to a decision.</li>
+</ul>
+<p><strong>Three nurture lifecycles:</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Lifecycle</th>
+<th>Who</th>
+<th>Goal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pre-call</td>
+<td>Haven't booked or attended a call yet</td>
+<td>Get the call booked</td>
+</tr>
+<tr>
+<td>Long cycle</td>
+<td>Said "not now" with a reason and a date</td>
+<td>Keep the gate warm until that date</td>
+</tr>
+<tr>
+<td>Dormant</td>
+<td>Silent for 60+ days</td>
+<td>One clean re-entry</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Pre-call nurture cadence (five touchpoints):</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Day</th>
+<th>Move</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>Confirm + one proof + one soft ask for time. Purpose: build awareness and trust.</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Switch to a different channel; answer the obvious questions they might have</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Share proof, don't pitch. Re-offer your time ("I'm free Monday afternoon or Tuesday")</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Keep it short: explore or close</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Ask permission to close the file</td>
+</tr>
+</tbody>
+</table></div></div></section>
+      <p class="foot">Notes by Vishak Bhaskar · <a href="../mindmap/">Open the mindmap</a></p>
+    </main>
+  </div>
+</div>
+<script>
+(() => {
+  // Highlight the current section in the chips and the contents list
+  const heads = [...document.querySelectorAll('.prose h3, .mod')];
+  const chips = [...document.querySelectorAll('.chip')];
+  const tocLinks = new Map([...document.querySelectorAll('.toc li a')].map(a => [a.hash.slice(1), a]));
+  const onScroll = () => {
+    let cur = null, mod = null;
+    for (const h of heads) {
+      if (h.getBoundingClientRect().top < 100) {
+        if (h.classList.contains('mod')) { mod = h.id; cur = null; } else cur = h.id;
+      }
+    }
+    mod = mod || 'offer';
+    chips.forEach(c => c.classList.toggle('active', c.dataset.mod === mod));
+    tocLinks.forEach((a, id) => a.classList.toggle('on', id === cur));
+    const on = tocLinks.get(cur), toc = document.querySelector('.toc');
+    if (on && toc) {
+      const top = on.getBoundingClientRect().top - toc.getBoundingClientRect().top + toc.scrollTop;
+      if (top < toc.scrollTop || top > toc.scrollTop + toc.clientHeight - 40) toc.scrollTop = top - toc.clientHeight / 3;
+    }
+  };
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  // Search: highlight matches and jump to the first one
+  const q = document.getElementById('q'), hits = document.getElementById('hits');
+  const root = document.querySelector('main');
+  const clear = () => root.querySelectorAll('mark').forEach(m => m.replaceWith(m.textContent));
+  let t;
+  q.addEventListener('input', () => {
+    clearTimeout(t);
+    t = setTimeout(() => {
+      clear(); root.normalize();
+      const term = q.value.trim();
+      if (term.length < 2) { hits.textContent = ''; return; }
+      const re = new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+      const nodes = []; while (walker.nextNode()) nodes.push(walker.currentNode);
+      let n = 0;
+      for (const node of nodes) {
+        const s = node.nodeValue; if (!re.test(s)) continue; re.lastIndex = 0;
+        const frag = document.createDocumentFragment(); let last = 0, m;
+        while ((m = re.exec(s))) {
+          frag.append(s.slice(last, m.index));
+          const mk = document.createElement('mark'); mk.textContent = m[0]; frag.append(mk);
+          last = m.index + m[0].length; n++;
+        }
+        frag.append(s.slice(last)); node.replaceWith(frag);
+      }
+      hits.textContent = n ? n + ' found' : 'none';
+      const first = root.querySelector('mark'); if (first) first.scrollIntoView({ block: 'center' });
+    }, 200);
+  });
+})();
+</script>
+</body>
+</html>
